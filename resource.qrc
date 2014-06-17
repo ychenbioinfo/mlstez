@@ -1,0 +1,18 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="filenew.png">images/New-icon.png</file>
+    <file alias="fileopen.png">images/Open-icon.png</file>
+    <file alias="filesave.png">images/Save-icon.png</file>
+    <file alias="fileclose.png">images/Close-icon.png</file>
+    <file alias="filemerge.png">images/Merge-icon.png</file>
+    <file alias="filequit.png">images/Quit-icon.png</file>
+    <file alias="projrun.png">images/Run-icon.png</file>
+    <file alias="projstop.png">images/Stop-icon.png</file>
+    <file alias="projsetup.png">images/Settings-icon.png</file>
+    <file alias="project.png">images/Folder-icon.png</file>
+    <file alias="info.png">images/File-icon.png</file>
+    <file alias="chart.png">images/Chart-icon.png</file>
+    <file alias="table.png">images/Table-icon.png</file>
+    <file alias="logo.png">images/Logo.png</file>
+</qresource>
+</RCC>

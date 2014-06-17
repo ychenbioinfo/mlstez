@@ -1,0 +1,11 @@
+.*
+!/.gitignore
+*.pyc
+*.pyo
+*.exe
+*.zip
+*.gz
+*.tar
+__pycache__/
+dist/
+build/

@@ -1,0 +1,32 @@
+#+TITLE: MSLTEasy Help Content
+* Introduction
+Efficient methods for estimating genetic diversity among the microorganisms are essential for understanding evolutionary history, geographic distribution, pathogenicity and virulence. In the past decades, numerous methods have been developed for typing of bacteria and fungi. Multilocus sequence typing (MLST) based DNA sequencing results, which can be easily archived and shared among different laboratories. MLST is one of the most reliable and informative method for molecular genotyping, and it has been adopted in many bacterial and fungal studies. 
+
+MLSTEasy was designed for next generation sequencing technology (PacBio CCS or Roche 454 platform) based MSLT methods, which were previously described [1][2]. MLST-Easy, can automatically identify the barcodes and primers used in the PCR reaction, corrects sequencing errors, generates the MLST profile for each isolate, predicts the potential heterozygous locus, and outputs different alleles. 
+* System requirements
+MLSTEasy was written in Python, version 2.7.6. The graphic user interface (GUI) was created by PyQt4 (http://www.riverbankcomputing.com/software/pyqt/download) and Qt Designer (http://qt-project.org/doc/qt-4.8/designer-manual.html). Mac version were tested under Mac OS X 10.9, and Windows version were tested under Windows Vista and Windows 7. The software runs on IBM-compatible PC under 32/64-bit Windows, and Mac OS X 10.6+. The minimum hardware requirements for the program are:
+  a processor based on the Intel Pentium 4/AMD Athlon
+  200 MB of RAM memory
+  hard drive with more than 200 MB available space
+  Windows XP or later version, Mac OS X 10.6+ with MUSCLE installed (http://www.drive5.com/muscle/downloads.htm)
+
+The recommended hardware requirements for the program are:
+  a multiple core processor based on the Intel Core 2 Due/AMD Athlon II (or higher)
+  4 GB of RAM memory
+  hard drive with more than 1 GB available space
+  Windows XP or later version, Mac OS X 10.6+ with MUSCLE installed (http://www.drive5.com/muscle/downloads.htm)
+
+* Create a new project
+
+** Sequencing Files (FASTA format; FASTQ format)
+** Barcode File
+** Primer File
+** Parameters
+* Run project
+** Barcode and primer identification
+** Generate consensus sequences
+** Dump unmapped reads
+** Search for heterozygous loci
+* Open Project
+* Merge Project
+* Result
