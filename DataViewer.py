@@ -166,9 +166,11 @@ class ConsensusViewer(QWidget):
         colnum = index.column()
         strain = self.strainIds[rownum]
         outseq = ""
+        windowtitle = ""
         if(colnum == 0):
             if(strain in self.strainCons):
                 strainSeqs = self.strainCons[strain]
+                windowtitle = "Consensus sequences of " + strain
                 for gene in strainSeqs:
                     seq = strainSeqs[gene]
                     outseq += seq.format("fasta")
@@ -176,6 +178,7 @@ class ConsensusViewer(QWidget):
                 return
         else:
             gene = self.geneIds[colnum - 1]
+            windowtitle = "Consensus sequence of " + strain + " " + gene
             if(strain in self.strainCons):
                 strainSeqs = self.strainCons[strain]
                 if(gene in strainSeqs):
@@ -188,6 +191,7 @@ class ConsensusViewer(QWidget):
 
         if(len(outseq) > 0):
             seqview = SeqViewDlg.SeqViewDlg(1,outseq)
+            seqview.setWindowTitle(windowtitle)
             seqview.exec_()
 
     def _UniqueIDs(self, refseqs, mode):
@@ -247,12 +251,14 @@ class HetViewer(QWidget):
         colnum = index.column()
         strain = self.rowname[rownum]
         gene = self.colname[colnum]
+        windowtitle = "Alleles of "+ strain + " " + gene
         try:
             seq1 = self.hetSeqs[strain][gene]['seq1']
             seq2 = self.hetSeqs[strain][gene]['seq2']
             outseq = seq1.format('fasta')
             outseq += seq2.format('fasta')
             seqview = SeqViewDlg.SeqViewDlg(1,outseq)
+            seqview.setWindowTitle(windowtitle)
             seqview.exec_()
         except:
             return
@@ -351,11 +357,13 @@ class TableViewer(QWidget):
         colnum = index.column()
         strain = self.rowname[rownum]
         gene = self.colname[colnum]
+        windowtitle = "Reads of "+ strain + " " + gene
         lengthRange = self.locusLengthRange[gene]
         (isget, trimmedseqs, untrimmedSeqs) = self.__extractSeqs(strain,gene,lengthRange)
         if(not isget):
             return
         seqview = SeqViewDlg.SeqViewDlg(0, trimmedseqs, untrimmedSeqs)
+        seqview.setWindowTitle(windowtitle)
         seqview.exec_()
     
     def __extractSeqs(self, strain, gene, lengthRange):

@@ -75,11 +75,11 @@ class MainWindow(QMainWindow):
         self.fileQuitAction = self.createAction("&Exit", self.closeApp,
                                            QKeySequence.Quit, "filequit", "Quit the application") 
         
-        self.projRunAction = self.createAction("&Run a job", self.projRun,
+        self.projRunAction = self.createAction("&Run project", self.projRun,
                                           "Ctrl+U", "projrun", "Run current project")
         self.projStopAction = self.createAction("&Kill running job", self.projStop,
                                           "Ctrl+S", "projstop", "Stop current project")
-        self.projSetupAction = self.createAction("&Job settings", self.projSetup,
+        self.projSetupAction = self.createAction("&Project settings", self.projSetup,
                                            "Ctrl+J", "projsetup", "Settings for current project")
         
         #self.plotReadLength = self.createAction("Read &Length", self.plotReadLength,
@@ -94,18 +94,21 @@ class MainWindow(QMainWindow):
         self.aboutAction = self.createAction("About", self.about, None, None, "About")
         
         ##--Main Menu setup----
-        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu = self.menuBar().addMenu("&Project")
         self.fileMenu.addAction(self.fileNewAction)
         self.fileMenu.addAction(self.fileOpenAction)
         self.fileMenu.addAction(self.fileMergeAction)
         self.fileMenu.addAction(self.fileCloseAction)
         self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.projSetupAction)
+        self.fileMenu.addAction(self.projRunAction)
+        self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.fileQuitAction)
         
-        self.projMenu = self.menuBar().addMenu("&Project")
-        self.projMenu.addAction(self.projSetupAction)
-        self.projMenu.addSeparator()
-        self.projMenu.addAction(self.projRunAction)
+        #self.projMenu = self.menuBar().addMenu("&Job Setting")
+        #self.projMenu.addAction(self.projSetupAction)
+        #self.projMenu.addSeparator()
+        #self.projMenu.addAction(self.projRunAction)
         
         self.projMenu = self.menuBar().addMenu("&Help")
         self.projMenu.addAction(self.aboutAction)
@@ -447,6 +450,7 @@ class MainWindow(QMainWindow):
         
     def projSetup(self):
         confDlg = ProgConfigDlg.ProgConfigDlg(self.curRuncode)
+        confDlg.setWindowTitle("Job settings...")
         retDlgCode = confDlg.exec_()
         if(retDlgCode == QDialog.Accepted):
             self.jobcode = confDlg.retcode
@@ -536,11 +540,11 @@ class MainWindow(QMainWindow):
         self.treeRoot.setText(0,("Project - %s" %(self.parameters.ProjectName)))
         self.__btnconfigStat()
         if(isfile(self.parameterfile)):   
-            newTreeItem = self.createTreeitem("Parameter", "info")
+            newTreeItem = self.createTreeitem("Parameters", "info")
             self.treeRoot.addChild(newTreeItem)
             infoview = DataViewer.TextViewer()
             infoview.readfile(self.parameterfile)
-            self.__addViewer(infoview,"Parameter")
+            self.__addViewer(infoview,"Parameters")
             self.__saveParatoSettings()
         self.dirty = True
 
@@ -549,22 +553,22 @@ class MainWindow(QMainWindow):
         barcodecount = self.projenv.numbarcodes()
         seqcount = self.projenv.numseqs()
         
-        newTreeItem = self.createTreeitem("Summary Info", "info")
+        newTreeItem = self.createTreeitem("Summary", "info")
         self.treeRoot.addChild(newTreeItem)
         self.infoview = DataViewer.TextViewer()
         infotext = ("Project: %s\n\nNumber of barcodes: %s\n\nNumber of primer pairs: %s\n\nNumber of reads: %s" 
                     %(self.projenv.parameters.ProjectName, barcodecount, primercount, seqcount))
         
         self.infoview.addtext(infotext)
-        self.__addViewer(self.infoview,"Summary Info")
+        self.__addViewer(self.infoview,"Summary")
     
     def __showSeqLength(self):
         seqlengths = self.projenv.seqlengths()
-        newTreeItem = self.createTreeitem("Read Length", "chart")
+        newTreeItem = self.createTreeitem("Read length dist", "chart")
         self.treeRoot.addChild(newTreeItem)
         infoview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
         infoview.plotDensity(seqlengths)
-        self.__addViewer(infoview,"Read Length")
+        self.__addViewer(infoview,"Read length dist")
     
     def __showAligned(self):
         #---viewer for align ratio
@@ -574,26 +578,26 @@ class MainWindow(QMainWindow):
         unprimer = self.projenv.num_unprimer
         bothaligned = barcodealigned - unprimer
         alignfracs = [bothaligned, unprimer, unaligned]
-        newTreeItem = self.createTreeitem("Alignment Ratio", "chart")
+        newTreeItem = self.createTreeitem("Alignment ratio", "chart")
         self.treeRoot.addChild(newTreeItem)
         ratioview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
         ratioview.plotAlignRatio(alignfracs)
-        self.__addViewer(ratioview,"Alignment Ratio")
+        self.__addViewer(ratioview,"Alignment ratio")
         
         #---viewer for length distribution
-        newTreeItem = self.createTreeitem("Length Range", "chart")
+        newTreeItem = self.createTreeitem("Length ranges", "chart")
         self.treeRoot.addChild(newTreeItem)
         lengthview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
         lengthview.plotLengthRange(self.projenv.locusLengthsInfo)
-        self.__addViewer(lengthview,"Length Range")
+        self.__addViewer(lengthview,"Length ranges")
         
         #---viewer for data table----
-        newTreeItem = self.createTreeitem("Sample Stats", "table")
+        newTreeItem = self.createTreeitem("Reads stats", "table")
         self.treeRoot.addChild(newTreeItem)
         statsview = DataViewer.TableViewer(self.projenv.parameters.Out_Folder,
                                            self.projenv.AlignedSeqs, self.projenv.locusLengthRange)
         statsview.showData(self.projenv.StrainStats, self.projenv.parameters.MinReadNum)
-        self.__addViewer(statsview,"Sample Stats")
+        self.__addViewer(statsview,"Reads stats")
         
         #---update infoview
         infotext = ("\nBarcode Alignment: %s/%s reads have barcodes aligned\n\n"
@@ -611,12 +615,12 @@ class MainWindow(QMainWindow):
         self.__addViewer(consview,"Consensus")
     
     def __showHet(self):
-        newTreeItem = self.createTreeitem("Het Stats", "table")
+        newTreeItem = self.createTreeitem("Heterozygous loci", "table")
         self.treeRoot.addChild(newTreeItem)
         statsview = DataViewer.HetViewer(self.projenv.parameters.Out_Folder,
                                            self.projenv.HetSeqs)
         statsview.showData(self.projenv.HetStats)
-        self.__addViewer(statsview,"Het Stats")
+        self.__addViewer(statsview,"Heterozygous loci")
     
     ##msg port project enviroment
     def showMsg(self, message, end='\n'):

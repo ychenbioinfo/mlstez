@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'progconfigdlg.ui'
 #
-# Created: Sun Mar 30 14:39:47 2014
+# Created: Sun Jun 29 19:28:53 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,18 +60,18 @@ class Ui_ProgConfigDlg(object):
         self.runselectedRadioButton.setGeometry(QtCore.QRect(40, 50, 171, 20))
         self.runselectedRadioButton.setObjectName(_fromUtf8("runselectedRadioButton"))
         self.buttonGroup.addButton(self.runselectedRadioButton)
-        self.widget = QtGui.QWidget(ProgConfigDlg)
-        self.widget.setGeometry(QtCore.QRect(168, 240, 213, 32))
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
+        self.layoutWidget1 = QtGui.QWidget(ProgConfigDlg)
+        self.layoutWidget1.setGeometry(QtCore.QRect(168, 240, 213, 32))
+        self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.layoutWidget1)
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.cancelButton = QtGui.QPushButton(self.widget)
+        self.cancelButton = QtGui.QPushButton(self.layoutWidget1)
         self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
         self.horizontalLayout.addWidget(self.cancelButton)
-        self.okayButton = QtGui.QPushButton(self.widget)
+        self.okayButton = QtGui.QPushButton(self.layoutWidget1)
         self.okayButton.setObjectName(_fromUtf8("okayButton"))
         self.horizontalLayout.addWidget(self.okayButton)
 
@@ -87,13 +87,13 @@ class Ui_ProgConfigDlg(object):
         ProgConfigDlg.setTabOrder(self.okayButton, self.cancelButton)
 
     def retranslateUi(self, ProgConfigDlg):
-        ProgConfigDlg.setWindowTitle(_translate("ProgConfigDlg", "Dialog", None))
+        ProgConfigDlg.setWindowTitle(_translate("ProgConfigDlg", "Project Settings", None))
         self.alignCheckBox.setText(_translate("ProgConfigDlg", "Barcode and primer identification", None))
         self.consensusCheckBox.setText(_translate("ProgConfigDlg", "Generate consensus sequences", None))
         self.unmapCheckBox.setText(_translate("ProgConfigDlg", "Dump unmapped reads", None))
-        self.hybridCheckBox.setText(_translate("ProgConfigDlg", "Search for hybrid/diploid strains", None))
+        self.hybridCheckBox.setText(_translate("ProgConfigDlg", "Search for heterozygous locus", None))
         self.runallRadioButton.setText(_translate("ProgConfigDlg", "Run the whole process", None))
-        self.runselectedRadioButton.setText(_translate("ProgConfigDlg", "Run selected programs", None))
+        self.runselectedRadioButton.setText(_translate("ProgConfigDlg", "Run selected functions", None))
         self.cancelButton.setText(_translate("ProgConfigDlg", "Cancel", None))
         self.okayButton.setText(_translate("ProgConfigDlg", "OK", None))
 
