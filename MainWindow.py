@@ -368,7 +368,7 @@ class MainWindow(QMainWindow):
             self.__showSeqLength()
             self.__showAligned()
             self.__btnconfigStat()
-            if(self.curRuncode & 1<<2):
+            if(self.curRuncode & 1<<1):
                 self.__showConsus()
             if(self.curRuncode & 1<<3):
                 self.__showHet()
