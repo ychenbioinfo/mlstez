@@ -17,13 +17,13 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>160</y>
+     <y>150</y>
      <width>411</width>
      <height>71</height>
     </rect>
    </property>
    <property name="text">
-    <string>Reference: Next Generation Multilocus Sequence Typing (NGMLST) and the Analytical Software Program MLSTEZ Enable Efficient, Cost-Effective, High-Throughput, Multilocus Sequencing Typing</string>
+    <string>Reference: Next Generation Multilocus Sequence Typing (NGMLST) and the Analytical Software Program MLSTEZ Enable Efficient, Cost-Effective, High-Throughput, Multilocus Sequencing Typing. Y Chen, et al., (submitted)</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
