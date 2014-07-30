@@ -138,12 +138,12 @@ class MainWindow(QMainWindow):
         self.PROJECTFILE = "project.nma"
       
     def __initUi(self):
-        settings = QSettings("CYSoft", "MLSTEasy")
+        settings = QSettings("CYSoft", "MLSTEZ")
         size = settings.value("MainWindow/Size", QVariant(QSize(850, 600))).toSize()
         self.resize(size)
         position = settings.value("MainWindow/Position", QVariant(QPoint(0,0))).toPoint()
         self.move(position)
-        self.setWindowTitle("MLSTEasy")
+        self.setWindowTitle("MLSTEZ")
         #self.restoreState(settings.value("MainWindow/State").toByteArray())
         
         self.__btninitStat()
@@ -184,8 +184,8 @@ class MainWindow(QMainWindow):
         infoview = DataViewer.TextViewer()
         #infoview.setstyle("font: 20pt \"Courier\";")
         #welcomeInfo = "<div align='center'><B><I><font size=20> " \
-        #              "MLST<font color='orange'>Easy</font></font></I></B><p><Next-generation MLST analyser></p></div>"
-        welcomeInfo = """<p><div align='center'><em><strong><span style="font-size:20px;">MLST<span style="color:#ffa500;">Easy</span></span></strong></em></div></p>
+        #              "<font color='orange'>MLSTEZ</font></font></I></B><p><Next-generation MLST solution></p></div>"
+        welcomeInfo = """<p><div align='center'><em><strong><span style="font-size:20px;">MLST<span style="color:#ffa500;">EZ</span></span></strong></em></div></p>
 <p><div align='center'>The next-generation MLST analyser</div></p>
 <p><div align='center'><I>(ver. 0.1)</I></div></p>
 <p><div align='center'>Created by: Yuan Chen</div></p>
@@ -211,7 +211,7 @@ class MainWindow(QMainWindow):
             
     
     def closeEvent(self, event):
-        settings = QSettings("CYSoft", "MLSTEasy")
+        settings = QSettings("CYSoft", "MLSTEZ")
         settings.setValue("MainWindow/Size", QVariant(self.size()))
         settings.setValue("MainWindow/Position", QVariant(self.pos()))
         #settings.setValue("MainWindow/State", QVariant(self.saveState()))
@@ -244,7 +244,7 @@ class MainWindow(QMainWindow):
     
     def __saveParatoSettings(self):
         paras = self.parameters
-        settings = QSettings("CYSoft", "MLSTEasy")
+        settings = QSettings("CYSoft", "MLSTEZ")
         settings.setValue("Paras/Filetype", QVariant(paras.Filetype))
         settings.setValue("Paras/MuscleCMD", QVariant(paras.MuscleCMD))
         settings.setValue("Paras/ScoringSys",  QVariant(paras.ScoringSys))
