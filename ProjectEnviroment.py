@@ -38,6 +38,7 @@ class ProjectEnviroment(object):
         self.num_unprimer = 0
         self.StrainStats = None
         self.HetStats = None
+        self.SymBarcode = True
 
     def loadFiles(self):
         isokay, errMsg = self.__readBarcodes()
@@ -141,15 +142,31 @@ class ProjectEnviroment(object):
         try:
             with open(barcodefile,'rU') as csv_barcode:
                 reader = csv.reader(csv_barcode)
+                firstline = True
+                
                 for line in reader:
-                    barcode = line[0].strip()
-                    barcode = barcode.upper()
-                    species = line[1].strip()
+                    if(firstline): #detect barcode mode
+                        numcol = len(line)
+                        if(numcol == 2):
+                            self.SymBarcode = True
+                        else:
+                            self.SymBarcode = False
+                    firstline = False
+                    
+                    species = line[0].strip()
                     species = species.replace(' ','.')
+                    barcode = line[1].strip()
+                    barcode = barcode.upper()
                     minscore = (len(barcode) - self.parameters.MaxMisMatch) * self.parameters.MatchScore + \
                     max(self.parameters.GapScore,self.parameters.MismatchScore) * self.parameters.MaxMisMatch
-                    barcode = Primer(barcode,barcode,minscore,minscore,barcode,species)
-                    Barcodes.append(barcode)
+                    if (self.SymBarcode):
+                        Barcode = Primer(barcode,barcode,minscore,minscore,barcode,species)
+                    else:
+                        barcodeR = line[2].strip()
+                        barcodeR = barcode.upper()
+                        Barcode = Primer(barcode,barcodeR,minscore,minscore,barcode,species)
+                    Barcodes.append(Barcode)
+
         except Exception as e:
             return (False, e)
         self.showMsg('done!')

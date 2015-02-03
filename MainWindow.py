@@ -470,7 +470,7 @@ class MainWindow(QMainWindow):
     def about(self):
         aboutDlg = AboutDlg.AboutDlg()
         aboutDlg.setFixedSize(450, 280)
-        aboutDlg.setWindowTitle("About MLST-EASY")
+        aboutDlg.setWindowTitle("About MLSTEZ")
         aboutDlg.exec_()
     
     def closeApp(self):

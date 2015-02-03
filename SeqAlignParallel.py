@@ -103,77 +103,8 @@ class SeqAlignments(object):
         self.primers = projenv.Primers
         self.msgHandle = projenv
         self.threadNum = self.paras.Threads
+        self.symbarcode = projenv.SymBarcode
     
-    #def AlignBarcodes(self):
-    #    self.msgHandle.showMsg("Searching for barcodes in reads...")
-    #    groupnum = int(len(self.seqs)/self.threadNum)
-    #    self.seqgroups = []
-    #    for i in range(self.threadNum):
-    #        startnum = groupnum * i
-    #        endnum = groupnum * (i+1)
-    #        if(i == self.threadNum - 1):
-    #            endnum = len(self.seqs)
-    #        self.seqgroups.append(self.seqs[startnum:endnum])
-    #    
-    #    self.workers = []
-    #    manager = Manager()
-    #    alignedseqs = manager.list()
-    #    primeredseqs = manager.list()
-    #    stats = manager.list()
-    #    unbarcode = manager.list()
-    #    unprimer = manager.list()
-    #
-    #    for i in range(self.threadNum):
-    #        child = Process(target=BarcodeSearch,
-    #                        args=(self.paras, self.seqgroups[i],
-    #                              self.barcodes, stats, alignedseqs, unbarcode))
-    #        child.start()
-    #        self.workers.append(child)
-    #    
-    #    totalcount = 0
-    #    while any(i.is_alive() for i in self.workers):
-    #        sleep(0.1)
-    #        while len(stats) > 0:
-    #            totalcount += 100
-    #            if(totalcount % 1000 == 0):
-    #                self.msgHandle.showMsg("%s reads have been processed..."
-    #                                       %(totalcount))
-    #            stats.pop()
-    #    self.msgHandle.showMsg('Done!')
-    #
-    #    for self.worker in self.workers:
-    #        self.worker.join()
-    #    
-    #def AlignPrimers(self):    
-    #    self.workers = []
-    #    self.msgHandle.showMsg("Searching for primers in reads...")
-    #
-    #    for i in range(self.threadNum):
-    #        child = Process(target=PrimerSearch,
-    #                        args=(self.paras, alignedseqs[i],
-    #                              self.primers, stats, unprimer,primeredseqs))
-    #        child.start()
-    #        self.workers.append(child)
-    #    
-    #    totalcount = 0
-    #    
-    #    while any(i.is_alive() for i in self.workers):
-    #        sleep(0.1)
-    #        while len(stats) > 0:
-    #            totalcount += 100
-    #            if(totalcount % 1000 == 0):
-    #                self.msgHandle.showMsg("%s reads have been processed..."
-    #                                       %(totalcount))
-    #            stats.pop()
-    #    
-    #    for self.worker in self.workers:
-    #        self.worker.join()
-    #    
-    #    self.alignedseqs = [aligned for aligns in primeredseqs for aligned in aligns]
-    #    self.num_unbarcode = sum(unbarcode)
-    #    self.num_unprimer = sum(unprimer)
-    #    self.msgHandle.showMsg('Done!')
-    #
     
     def Run(self):
         self.msgHandle.showMsg("Searching for barcodes in reads...")
@@ -197,7 +128,7 @@ class SeqAlignments(object):
         for i in range(self.threadNum):
             child = Process(target=BarcodeSearch,
                             args=(self.paras, self.seqgroups[i],
-                                  self.barcodes, stats, alignedseqs, unbarcode))
+                                  self.barcodes, self.symbarcode, stats, alignedseqs, unbarcode))
             child.start()
             self.workers.append(child)
         
@@ -252,7 +183,7 @@ class SeqAlignments(object):
         return 
     
 #def BarcodeSearch(self):
-def BarcodeSearch(paras, seqs, barcodes, stats, result, unbarcode):
+def BarcodeSearch(paras, seqs, barcodes, symbarcode, stats, result, unbarcode):
     
     seqcount = 0
     unmapcount = 0
@@ -277,12 +208,29 @@ def BarcodeSearch(paras, seqs, barcodes, stats, result, unbarcode):
             alignSeq.alnBarcode = alnrec
             alignedseqs.append(alignSeq)
         else:
-            alignSeq = AlignedSeq(seq)
-            alignSeq.barcode = ''
-            alignSeq.strain = ''
-            alignSeq.alnBarcode = ''
-            alignedseqs.append(alignSeq)
-            unmapcount += 1
+            if(symbarcode):
+                alignSeq = AlignedSeq(seq)
+                alignSeq.barcode = ''
+                alignSeq.strain = ''
+                alignSeq.alnBarcode = ''
+                alignedseqs.append(alignSeq)
+                unmapcount += 1
+            else:
+                seq_rev = seq.reverse_complement()
+                isMatch,alnrec = _SeqSearch(paras, seq_rev, barcodes, padlen, reglen)
+                if(isMatch):
+                    alignSeq.barcode = alnrec.id
+                    alignSeq.strain = alnrec.des
+                    alignSeq.alnBarcode = alnrec
+                    alignedseqs.append(alignSeq)
+                else:
+                    alignSeq = AlignedSeq(seq)
+                    alignSeq.barcode = ''
+                    alignSeq.strain = ''
+                    alignSeq.alnBarcode = ''
+                    alignedseqs.append(alignSeq)
+                    unmapcount += 1
+
     result.append(alignedseqs)
     unbarcode.append(unmapcount)
     
@@ -352,34 +300,36 @@ def _SeqSearch(paras,seq,refseqs,padlen,reglen):
     sw = SWAlign.LocalAlignment(SWAlign.NucleotideScoringMatrix
                                 (paras.MatchScore, paras.MismatchScore), paras.GapScore)
     isMatch = False       
-    isMatch,qrec = _QuickSearch(seq_L,seq_Rr,refseqs,sw,paras.MatchScore,trim_len)
+    #isMatch,qrec = _QuickSearch(seq_L,seq_Rr,refseqs,sw,paras.MatchScore,trim_len)
     
-    if(isMatch):
-        qrec = _AlignAddPad(qrec,padlen)
-        alignRes.append(qrec)
-    else:
-        for refseq in refseqs:
-            alnrec = AlignRecord()
-            l_align = _SeqAlign(refseq.f,seq_L,sw)
-            r_align = _SeqAlign(refseq.r,seq_Rr,sw)
-            if(l_align['mismatch'] <= paras.MaxMisMatch or r_align['mismatch'] <= paras.MaxMisMatch):
-                #if((l_align['score'] + r_align['score'])/2 >= self.paras.MinBarcodeScore):
-                if(l_align['score'] >= refseq.fs or r_align['score'] >= refseq.rs):
-                    #print ("###",barcode)
-                    isMatch = True
-                    r_s = seq_len - r_align['e'] - 1
-                    r_e = seq_len - r_align['s'] - 1
-                    alnrec.id = refseq.id
-                    alnrec.des = refseq.des
-                    alnrec.ls = l_align['s']
-                    alnrec.le = l_align['e']
-                    alnrec.lscore = l_align['score']
-                    alnrec.rs = r_s
-                    alnrec.re = r_e
-                    alnrec.rscore = r_align['score']
-                    alnrec.dir = '+'
-                    alnrec = _AlignAddPad(alnrec,padlen)
-                    alignRes.append(alnrec)
+    #if(isMatch):
+        #qrec = _AlignAddPad(qrec,padlen)
+        #alignRes.append(qrec)
+    #else:
+    #remove quicksearch function
+    
+    for refseq in refseqs:
+        alnrec = AlignRecord()
+        l_align = _SeqAlign(refseq.f,seq_L,sw)
+        r_align = _SeqAlign(refseq.r,seq_Rr,sw)
+        if(l_align['mismatch'] <= paras.MaxMisMatch or r_align['mismatch'] <= paras.MaxMisMatch):
+            #if((l_align['score'] + r_align['score'])/2 >= self.paras.MinBarcodeScore):
+            if(l_align['score'] >= refseq.fs or r_align['score'] >= refseq.rs):
+                #print ("###",barcode)
+                isMatch = True
+                r_s = seq_len - r_align['e'] - 1
+                r_e = seq_len - r_align['s'] - 1
+                alnrec.id = refseq.id
+                alnrec.des = refseq.des
+                alnrec.ls = l_align['s']
+                alnrec.le = l_align['e']
+                alnrec.lscore = l_align['score']
+                alnrec.rs = r_s
+                alnrec.re = r_e
+                alnrec.rscore = r_align['score']
+                alnrec.dir = '+'
+                alnrec = _AlignAddPad(alnrec,padlen)
+                alignRes.append(alnrec)
                     
     if(isMatch):
         alnrec = alignRes.BestAlign()

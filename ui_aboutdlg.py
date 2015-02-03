@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'aboutdlg.ui'
 #
-# Created: Wed Jul 30 16:25:37 2014
+# Created: Wed Jul 30 16:29:26 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -70,7 +70,7 @@ class Ui_AboutDlg(object):
         QtCore.QMetaObject.connectSlotsByName(AboutDlg)
 
     def retranslateUi(self, AboutDlg):
-        AboutDlg.setWindowTitle(_translate("AboutDlg", "About MLST-EASY", None))
+        AboutDlg.setWindowTitle(_translate("AboutDlg", "About MLSTEZ", None))
         self.label_4.setText(_translate("AboutDlg", "Reference: Next Generation Multilocus Sequence Typing (NGMLST) and the Analytical Software Program MLSTEZ Enable Efficient, Cost-Effective, High-Throughput, Multilocus Sequencing Typing. Y Chen, et al., (submitted)", None))
         self.pushButton.setText(_translate("AboutDlg", "OK", None))
         self.label_3.setText(_translate("AboutDlg", "Email: ychenbioinfo@gmail.com", None))

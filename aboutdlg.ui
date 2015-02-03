@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About MLST-EASY</string>
+   <string>About MLSTEZ</string>
   </property>
   <widget class="QLabel" name="label_4">
    <property name="geometry">

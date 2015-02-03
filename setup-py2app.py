@@ -10,7 +10,7 @@ OPTIONS = {
 
 setup(
   app= APP,
-  name='MLSTAnalyser',
+  name='MLSTEZ',
   data_files=DATA_FILES,
   options=OPTIONS,
   setup_requires=["py2app"]) 

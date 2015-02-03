@@ -1,6 +1,11 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from scipy.stats import gaussian_kde
+from numpy import arange
+import matplotlib.mlab as mlab
+import numpy as np
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 import random
 import sys
@@ -42,6 +47,7 @@ class ImageViewer(QWidget):
     def plotDensity(self, data):
         ax = self.figure.add_subplot(111)
         ax.hist(data, bins = 20)
+
         ax.set_title("Read Length Distribution")
         ax.set_xlabel("Read Length")
         ax.set_ylabel("Count")
@@ -51,9 +57,22 @@ class ImageViewer(QWidget):
         locusnames = seqlengthinfo['name']
         data = seqlengthinfo['data']
         ax = self.figure.add_subplot(111)
-        ax.boxplot(data)
+        
+        colnum = len(data)
+        pos = range(colnum)
+        w = min(0.15*max(colnum,1.0),0.5)
+        for i in range(colnum):
+            k = gaussian_kde(data[i])
+            m = k.dataset.min()
+            M = k.dataset.max()
+            x = arange(m,M,(M-m)/100.)
+            v = k.evaluate(x)
+            v = v/v.max()*w
+            ax.fill_betweenx(x,i,v+i,facecolor='y',alpha=0.3)
+            ax.fill_betweenx(x,i,-v+i,facecolor='y',alpha=0.3)
+        ax.boxplot(data,notch=1,positions=pos,vert=1)
         ax.set_xticklabels(locusnames,rotation=40)
-        ax.set_title("Length distribution of each loci")
+        ax.set_title("Length distribution of loci")
         self.canvas.draw()
     
     def plotAlignRatio(self, data):
@@ -68,6 +87,7 @@ class ImageViewer(QWidget):
             return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
         
         ax.pie(data, labels = labels, explode=explode, autopct=my_autopct, shadow=True)
+        ax.set_title("Alignment ratio")
         #ax.set_title("Read alignment ratio")
         self.canvas.draw()
     
