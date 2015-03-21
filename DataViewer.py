@@ -4,8 +4,8 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.stats import gaussian_kde
 from numpy import arange
 import matplotlib.mlab as mlab
-import numpy as np
-import scipy.stats as stats
+#import numpy as np
+#import scipy.stats as stats
 import matplotlib.pyplot as plt
 import random
 import sys
@@ -61,7 +61,7 @@ class ImageViewer(QWidget):
         colnum = len(data)
         pos = range(colnum)
         w = min(0.15*max(colnum,1.0),0.5)
-        for i in range(colnum):
+        for i in xrange(colnum):
             k = gaussian_kde(data[i])
             m = k.dataset.min()
             M = k.dataset.max()
@@ -71,6 +71,7 @@ class ImageViewer(QWidget):
             ax.fill_betweenx(x,i,v+i,facecolor='y',alpha=0.3)
             ax.fill_betweenx(x,i,-v+i,facecolor='y',alpha=0.3)
         ax.boxplot(data,notch=1,positions=pos,vert=1)
+        #ax.boxplot(data,'gD')
         ax.set_xticklabels(locusnames,rotation=40)
         ax.set_title("Length distribution of loci")
         self.canvas.draw()
@@ -117,17 +118,24 @@ class TextViewer(QWidget):
 
 
 class ConsensusViewer(QWidget):
-    def __init__(self, consSeqs=None, Primers=None, Barcodes=None, parent=None):
+    def __init__(self, consSeqs=None, Primers=None, Barcodes=None, outfolder = "", parent=None):
         super(ConsensusViewer, self).__init__(parent)
+        self.outfolder = outfolder
         self.viewer = QTableWidget()
+        self.button = QPushButton('Export table')
+        buttonlayout = QHBoxLayout()
+        buttonlayout.addStretch()
+        buttonlayout.addWidget(self.button)
         layout = QVBoxLayout()
         layout.addWidget(self.viewer)
+        layout.addLayout(buttonlayout)
         self.setLayout(layout)
         self.consSeqs = consSeqs
         self.strainIds = self._UniqueIDs(Barcodes,1)
         self.geneIds = self._UniqueIDs(Primers,2)
         #self.strainIds = ["H99"]
         #self.geneIds = ["LAC1","CAP59","SOD1","PLB1","TEF1","URA5","IGS1","GPD1"]
+        self.button.clicked.connect(self.exportData)
         self.viewer.doubleClicked.connect(self.showSeqs)
     
     def showData(self):
@@ -151,7 +159,7 @@ class ConsensusViewer(QWidget):
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
         self.viewer.setHorizontalHeaderItem(0, QTableWidgetItem("Strain"))
-        for i in range(1,colnum):
+        for i in xrange(1,colnum):
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(self.geneIds[i-1]))
             
         rowcount = 0
@@ -180,7 +188,33 @@ class ConsensusViewer(QWidget):
         self.viewer.resizeColumnsToContents()
         self.viewer.horizontalHeader().setStretchLastSection(True)
         self.strainCons = strainCons
- 
+
+    def exportData(self):
+        import csv
+        filename = str(QFileDialog.getSaveFileName(
+            self, "Export data", self.outfolder, "CSV file (*.csv)"))
+        if(filename):
+            fileN = filename.split('.')
+            if(fileN[-1] != "csv"):
+                filename += ".csv"
+            try:
+                fh_outfile = open(filename,'w')
+                csv_writer = csv.writer(fh_outfile, dialect='excel')
+                header = self.geneIds
+                header.insert(0,'Strain')
+                csv_writer.writerow(header)
+                for i in xrange(self.viewer.rowCount()):
+                    content = []
+                    for j in xrange(self.viewer.columnCount()):
+                        content.append(self.viewer.item(i,j).text())
+                    csv_writer.writerow(content)
+                
+                fh_outfile.close()
+                QMessageBox.information(self, "Data Exported", "Data exported!")
+            except IOError as e:
+                QMessageBox.warning(self, "Error:",
+                                    "Error: %s" %e.strerror, QMessageBox.Ok|QMessageBox.Default)
+
     def showSeqs(self,index):
         rownum = index.row()
         colnum = index.column()
@@ -251,10 +285,10 @@ class HetViewer(QWidget):
         self.viewer.setRowCount(rownum)
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
-        for i in range(colnum):
+        for i in xrange(colnum):
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(header[i]))
-        for i in range(rownum):
-            for j in range(colnum):
+        for i in xrange(rownum):
+            for j in xrange(colnum):
                 datainfo = str(data[i+1][j])
                 if(j == 0):
                     self.rowname.append(datainfo)
@@ -294,7 +328,7 @@ class HetViewer(QWidget):
             try:
                 fh_outfile = open(filename,'w')
                 csv_writer = csv.writer(fh_outfile, dialect='excel')
-                for i in range(len(self.data)):
+                for i in xrange(len(self.data)):
                     csv_writer.writerow(self.data[i])
                 fh_outfile.close()
                 QMessageBox.information(self, "Data Exported", "Data exported!")
@@ -333,12 +367,12 @@ class TableViewer(QWidget):
         self.viewer.setRowCount(rownum)
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
-        for i in range(colnum):
+        for i in xrange(colnum):
             if(header[i] == "unmapped"):
                 header[i] = "UnMap"
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(header[i]))
-        for i in range(rownum):
-            for j in range(colnum):
+        for i in xrange(rownum):
+            for j in xrange(colnum):
                 datainfo = str(data[i+1][j])
                 if(j == 0):
                     self.rowname.append(datainfo)
@@ -364,7 +398,7 @@ class TableViewer(QWidget):
             try:
                 fh_outfile = open(filename,'w')
                 csv_writer = csv.writer(fh_outfile, dialect='excel')
-                for i in range(len(self.data)):
+                for i in xrange(len(self.data)):
                     csv_writer.writerow(self.data[i])
                 fh_outfile.close()
                 QMessageBox.information(self, "Data Exported", "Data exported!")

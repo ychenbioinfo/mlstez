@@ -110,7 +110,7 @@ class SeqAlignments(object):
         self.msgHandle.showMsg("Searching for barcodes in reads...")
         groupnum = int(len(self.seqs)/self.threadNum)
         self.seqgroups = []
-        for i in range(self.threadNum):
+        for i in xrange(self.threadNum):
             startnum = groupnum * i
             endnum = groupnum * (i+1)
             if(i == self.threadNum - 1):
@@ -125,7 +125,7 @@ class SeqAlignments(object):
         unbarcode = manager.list()
         unprimer = manager.list()
     
-        for i in range(self.threadNum):
+        for i in xrange(self.threadNum):
             child = Process(target=BarcodeSearch,
                             args=(self.paras, self.seqgroups[i],
                                   self.barcodes, self.symbarcode, stats, alignedseqs, unbarcode))
@@ -149,7 +149,7 @@ class SeqAlignments(object):
         self.workers = []
         self.msgHandle.showMsg("Searching for primers in reads...")
     
-        for i in range(self.threadNum):
+        for i in xrange(self.threadNum):
             child = Process(target=PrimerSearch,
                             args=(self.paras, alignedseqs[i],
                                   self.primers, stats, unprimer,primeredseqs))
@@ -299,54 +299,57 @@ def _SeqSearch(paras,seq,refseqs,padlen,reglen):
     alignRes = AlignRes(seq)
     sw = SWAlign.LocalAlignment(SWAlign.NucleotideScoringMatrix
                                 (paras.MatchScore, paras.MismatchScore), paras.GapScore)
-    isMatch = False       
-    #isMatch,qrec = _QuickSearch(seq_L,seq_Rr,refseqs,sw,paras.MatchScore,trim_len)
+    isMatch = 0       
+    isMatch,qrec = _QuickSearch(seq_L,seq_Rr,refseqs,sw,paras,trim_len)
     
-    #if(isMatch):
-        #qrec = _AlignAddPad(qrec,padlen)
-        #alignRes.append(qrec)
-    #else:
-    #remove quicksearch function
-    
-    for refseq in refseqs:
-        alnrec = AlignRecord()
-        l_align = _SeqAlign(refseq.f,seq_L,sw)
-        r_align = _SeqAlign(refseq.r,seq_Rr,sw)
-        if(l_align['mismatch'] <= paras.MaxMisMatch or r_align['mismatch'] <= paras.MaxMisMatch):
-            #if((l_align['score'] + r_align['score'])/2 >= self.paras.MinBarcodeScore):
-            if(l_align['score'] >= refseq.fs or r_align['score'] >= refseq.rs):
-                #print ("###",barcode)
-                isMatch = True
-                r_s = seq_len - r_align['e'] - 1
-                r_e = seq_len - r_align['s'] - 1
-                alnrec.id = refseq.id
-                alnrec.des = refseq.des
-                alnrec.ls = l_align['s']
-                alnrec.le = l_align['e']
-                alnrec.lscore = l_align['score']
-                alnrec.rs = r_s
-                alnrec.re = r_e
-                alnrec.rscore = r_align['score']
-                alnrec.dir = '+'
-                alnrec = _AlignAddPad(alnrec,padlen)
-                alignRes.append(alnrec)
+    if(isMatch == 1):
+        qrec = _AlignAddPad(qrec,padlen)
+        alignRes.append(qrec)
+    elif(isMatch == 0):
+        for refseq in refseqs:
+            alnrec = AlignRecord()
+            l_align = _SeqAlign(refseq.f,seq_L,sw)
+            r_align = _SeqAlign(refseq.r,seq_Rr,sw)
+            if(l_align['mismatch'] <= paras.MaxMisMatch and r_align['mismatch'] <= paras.MaxMisMatch):
+                #if((l_align['score'] + r_align['score'])/2 >= self.paras.MinBarcodeScore):
+                if(l_align['score'] >= refseq.fs and r_align['score'] >= refseq.rs):
+                    #print ("###",barcode)
+                    isMatch = 1
+                    r_s = seq_len - r_align['e'] - 1
+                    r_e = seq_len - r_align['s'] - 1
+                    alnrec.id = refseq.id
+                    alnrec.des = refseq.des
+                    alnrec.ls = l_align['s']
+                    alnrec.le = l_align['e']
+                    alnrec.lscore = l_align['score']
+                    alnrec.rs = r_s
+                    alnrec.re = r_e
+                    alnrec.rscore = r_align['score']
+                    alnrec.dir = '+'
+                    alnrec = _AlignAddPad(alnrec,padlen)
+                    alignRes.append(alnrec)
                     
-    if(isMatch):
+    if(isMatch == 1):
         alnrec = alignRes.BestAlign()
-        return (isMatch,alnrec)
+        return (True,alnrec)
     else:
-        return (isMatch,"")
+        return (False,"")
     
-def _QuickSearch(seqL,seqR,refseqs,sw,matchscore,seqlen):
+def _QuickSearch(seqL,seqR,refseqs,sw,paras,seqlen):
+    matchscore = paras.MatchScore
+    mismatchscore = paras.MismatchScore
+    gapscore = paras.GapScore
+    maxmismatch = paras.MaxMisMatch
+    
     alignRes = AlignRecord()
-    Matched = False
-    lseq = seqL.seq.upper()
-    rseq = seqR.seq.upper()
+    Matched = 0
+    lseq = seqL.seq
+    rseq = seqR.seq
     for refseq in refseqs:
         posL = lseq.find(refseq.f)
         posR = rseq.find(refseq.r)
+        
         if(posL >= 0):
-            Matched = True
             alignRes.id = refseq.id
             alignRes.des = refseq.des
             alignRes.ls = posL
@@ -354,22 +357,28 @@ def _QuickSearch(seqL,seqR,refseqs,sw,matchscore,seqlen):
             alignRes.lscore = refseq.fl * matchscore
             alignRes.dir = '+'
             if(posR >= 0):
+                Matched = 1
                 rs = posR
                 re = posR + refseq.rl -1
                 alignRes.rs = seqlen - re -1
                 alignRes.re = seqlen - rs -1
                 alignRes.rscore = refseq.rl * matchscore
+                break
             else:
                 align = _SeqAlign(refseq.r,seqR,sw)
-                alignRes.rs = seqlen - align['e'] -1
-                alignRes.re = seqlen - align['s'] -1
-                alignRes.rscore = align['score']
-            break
+                if(align['mismatch'] <= maxmismatch and align['score'] >= refseq.fs):
+                    Matched = 1
+                    alignRes.rs = seqlen - align['e'] -1
+                    alignRes.re = seqlen - align['s'] -1
+                    alignRes.rscore = align['score']
+                else:
+                    Matched = 2
+                break
         else:
             if(posR >= 0):
                 alignRes.id = refseq.id
                 alignRes.des = refseq.des
-                Matched = True
+                Matched = 1
                 alignRes.dir = '+'
                 rs = posR
                 re = posR + refseq.rl -1
@@ -377,11 +386,14 @@ def _QuickSearch(seqL,seqR,refseqs,sw,matchscore,seqlen):
                 alignRes.re = seqlen - rs -1
                 alignRes.rscore = refseq.rl * matchscore
                 align = _SeqAlign(refseq.f,seqL,sw)
-                alignRes.ls = align['s']
-                alignRes.le = align['e']
-                alignRes.lscore = align['score']
+                if(align['mismatch'] <= maxmismatch and align['score'] >= refseq.fs):
+                    Matched = 1
+                    alignRes.ls = align['s']
+                    alignRes.le = align['e']
+                    alignRes.lscore = align['score']
+                else:
+                    Matched = 2
                 break
-
     return (Matched,alignRes)    
     
 def _AlignAddPad(alnrec,padlen):

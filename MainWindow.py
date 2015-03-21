@@ -21,7 +21,7 @@ import DataViewer
 import ProjectEnviroment
 import AboutDlg
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 class MainWindow(QMainWindow):
     runinfo = QtCore.pyqtSignal(object, object)
@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
         #              "<font color='orange'>MLSTEZ</font></font></I></B><p><Next-generation MLST solution></p></div>"
         welcomeInfo = """<p><div align='center'><em><strong><span style="font-size:20px;">MLST<span style="color:#ffa500;">EZ</span></span></strong></em></div></p>
 <p><div align='center'>The next-generation MLST analyser</div></p>
-<p><div align='center'><I>(ver. 0.1)</I></div></p>
+<p><div align='center'><I>(ver. 0.2.0)</I></div></p>
 <p><div align='center'>Created by: Yuan Chen</div></p>
 <p><div align='center'>Duke University Medical Center</div></p>"""
         infoview.addtext(welcomeInfo)
@@ -334,44 +334,48 @@ class MainWindow(QMainWindow):
                                     ("Cannot file project information"), QMessageBox.Ok|QMessageBox.Default)
                 return
             self.projenv = ProjectEnviroment.ProjectEnviroment(self.parameters, self.runinfo)
-            fh = gzip.open(projfile, "rb")
-            buffer = ""
-            BLOCK_SIZE = 2**20
-            while True:
-                data = fh.read(BLOCK_SIZE)
-                if data == "":
-                    break
-                buffer += data
-            projinfo = pickle.loads(buffer)
-            self.projenv.parameters = projinfo['parameters']
-            self.projenv.Seqs = projinfo['Seqs'] 
-            self.projenv.Primers = projinfo['Primers']
-            self.projenv.Barcodes = projinfo['Barcodes']
-            self.projenv.AlignedSeqs = projinfo['AlignedSeqs']
-            self.projenv.SortedSeqs = projinfo['SortedSeqs']
-            self.projenv.locusLengthRange = projinfo['locusLengthRange']
-            self.projenv.consSeqs = projinfo['consSeqs']
-            self.projenv.locusLengthsInfo = projinfo['locusLengthsInfo']
-            self.projenv.num_unbarcode = projinfo['num_unbarcode']
-            self.projenv.num_unprimer = projinfo['num_unprimer']
-            self.projenv.StrainStats = projinfo['StrainStats']
-            self.projenv.HetSeqs = projinfo['HetSeqs']
-            self.projenv.HetInfo = projinfo['HetInfo']
-            self.projenv.HetStats = projinfo['HetStats']
-
-            self.curRuncode = projinfo['runstats']
-            self.dirty = True
-            self.parameters = self.projenv.parameters
-            self.parameterfile = self.projenv.parameters.Out_Folder + "/config.ini"
-            self.__showParameter()
-            self.__showSummary()
-            self.__showSeqLength()
-            self.__showAligned()
-            self.__btnconfigStat()
-            if(self.curRuncode & 1<<1):
-                self.__showConsus()
-            if(self.curRuncode & 1<<3):
-                self.__showHet()
+            try:
+                fh = gzip.open(projfile, "rb")
+                buffer = ""
+                BLOCK_SIZE = 2**20
+                while True:
+                    data = fh.read(BLOCK_SIZE)
+                    if data == "":
+                        break
+                    buffer += data
+                projinfo = pickle.loads(buffer)
+                self.projenv.parameters = projinfo['parameters']
+                self.projenv.Seqs = projinfo['Seqs'] 
+                self.projenv.Primers = projinfo['Primers']
+                self.projenv.Barcodes = projinfo['Barcodes']
+                self.projenv.AlignedSeqs = projinfo['AlignedSeqs']
+                self.projenv.SortedSeqs = projinfo['SortedSeqs']
+                self.projenv.locusLengthRange = projinfo['locusLengthRange']
+                self.projenv.consSeqs = projinfo['consSeqs']
+                self.projenv.locusLengthsInfo = projinfo['locusLengthsInfo']
+                self.projenv.num_unbarcode = projinfo['num_unbarcode']
+                self.projenv.num_unprimer = projinfo['num_unprimer']
+                self.projenv.StrainStats = projinfo['StrainStats']
+                self.projenv.HetSeqs = projinfo['HetSeqs']
+                self.projenv.HetInfo = projinfo['HetInfo']
+                self.projenv.HetStats = projinfo['HetStats']
+    
+                self.curRuncode = projinfo['runstats']
+                self.dirty = True
+                self.parameters = self.projenv.parameters
+                self.parameterfile = self.projenv.parameters.Out_Folder + "/config.ini"
+                self.__showParameter()
+                self.__showSummary()
+                self.__showSeqLength()
+                self.__showAligned()
+                self.__btnconfigStat()
+                if(self.curRuncode & 1<<1):
+                    self.__showConsus()
+                if(self.curRuncode & 1<<3):
+                    self.__showHet()
+            except Exception as e:
+                QMessageBox.warning(self.mainframe, "Error",("Error: %s" %error),
+                                    QMessageBox.Ok|QMessageBox.Default) 
         return
         
     def projMerge(self):
@@ -609,8 +613,8 @@ class MainWindow(QMainWindow):
     def __showConsus(self):
         newTreeItem = self.createTreeitem("Consensus", "table")
         self.treeRoot.addChild(newTreeItem)
-        consview = DataViewer.ConsensusViewer(self.projenv.consSeqs,
-                                              self.projenv.Primers,self.projenv.Barcodes)
+        consview = DataViewer.ConsensusViewer(self.projenv.consSeqs,self.projenv.Primers,
+                                              self.projenv.Barcodes,self.projenv.parameters.Out_Folder)
         consview.showData()
         self.__addViewer(consview,"Consensus")
     
@@ -711,15 +715,9 @@ class ProjectThread(QtCore.QThread):
         else:
             return(False, error)
         
-    #def terminate(self):
-    #    if(self.projenv.ismultirun):
-    #        self.projenv.alignStop()
-    #    self.terminated()
-    #    return
-        
 def main():
     app = QApplication(sys.argv)
-    app.setApplicationName("MLST-EASY")
+    app.setApplicationName("MLSTEZ")
     mainwindow = MainWindow()
     mainwindow.show()
     app.exec_()

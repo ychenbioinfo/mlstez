@@ -83,6 +83,7 @@ class ProjectEnviroment(object):
                 handle = open(file,'rU')
                 if(filetype == "FASTA"):
                     for seq in SeqIO.parse(handle,"fasta"):
+                        seq = seq.upper()
                         seqlen = len(seq)
                         quality = [50] * seqlen
                         seq.letter_annotations["phred_quality"] = quality
@@ -90,9 +91,11 @@ class ProjectEnviroment(object):
                 else:
                     if(scoretype == "phred33"):
                         for seq in SeqIO.parse(handle,"fastq-sanger"):
+                            seq = seq.upper()
                             Seqs.append(seq)
                     else:
                         for seq in SeqIO.parse(handle,"fastq-solexa"):
+                            seq = seq.upper()
                             Seqs.append(seq)
             except Exception as e:
                 return (False, e)
@@ -149,8 +152,10 @@ class ProjectEnviroment(object):
                         numcol = len(line)
                         if(numcol == 2):
                             self.SymBarcode = True
-                        else:
+                        elif(numcol == 3):
                             self.SymBarcode = False
+                        else:
+                            raise ValueError ("Incorrect format of barcode file!")
                     firstline = False
                     
                     species = line[0].strip()
@@ -224,7 +229,7 @@ class ProjectEnviroment(object):
         return (True, None)
         
     def locusLengths(self):
-        self.showMsg('Calculate length distribution of each loci...', end="")
+        self.showMsg('Calculate length distribution of each locus...', end="")
         locuslens = {}
         for seq in self.AlignedSeqs:
             if(seq.gene == ""):continue
@@ -246,14 +251,22 @@ class ProjectEnviroment(object):
         self.locusLengthsInfo['data'] = locuslenList
                 
         locusRange = {}
+        #lendiver = 0.05
         for gene in locuslens:
             lengths = locuslens[gene]
+            totallength = 0
+            #for i in lengths:
+            #    totallength += i
+            #meanlength = totallength/len(lengths)
+            #s1 = meanlength * (1 - lendiver)
+            #s2 = meanlength * (1 + lendiver)
             sortedlength = sorted(lengths)
             listlen = len(lengths)
             q1 = sortedlength[int(listlen*0.25)]
             q3 = sortedlength[int(listlen*0.75)]
             iqd = q3-q1
-            whisker = 1.5*iqd
+            #whisker = 1.5*iqd
+            whisker = 2*iqd
             s1 = q1 - whisker
             s2 = q3 +  whisker
             lenRange = {'s1':s1,'s2':s2}
@@ -469,7 +482,7 @@ class ProjectEnviroment(object):
                 passcount += 1
         return passcount
 
-    def showMsg(self, msg, end="\n"):    
+    def showMsg(self, msg, end="\n"):
         if(self.msgHandle is not None):
             self.msgHandle.emit(msg, end)
         else:

@@ -8,6 +8,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from scipy.stats import ttest_1samp
+#import cogent.maths.stats.test as stats
 from multiprocessing import Pool
 import re
 import sys
@@ -49,7 +50,7 @@ class HetSearch(object):
         self.HetInfo = {}
 
     def Run(self):
-        self.msgHandle.showMsg ('Searching for heterozygous locus...', "")
+        self.msgHandle.showMsg ('Searching for heterozygous loci...', "")
         pool = Pool(self.parameters.Threads)
         from time import time
         ##t0 = time()
@@ -146,6 +147,7 @@ def __isHetero(variantBases, maxpvalue, minreadratio):
         if(isunique):
             t_statistic, p_value = ttest_1samp(scoreinfo['scores'], scoreinfo['minscore'])
             #print("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value))
+            #t, p_value = stats.t_one_sample(scoreinfo['scores'], scoreinfo['minscore'], tails='low')
             if(p_value <= maxpvalue):
                 #print ("Is hetero!")
                 return (True, scoreinfo['minindex'])
@@ -188,7 +190,7 @@ def __isConsIden(seq1,seq2,MUSCLE,MinHetVariants):
     if(str(trimSeq1) == str(trimSeq2)):
         return True
     vCount = 0
-    for i in range(len(trimSeq1)):
+    for i in xrange(len(trimSeq1)):
         if(trimSeq1[i] != trimSeq2[i]):
             if(trimSeq1[i] != '-' and trimSeq2[i] != '-'):
                 if((trimSeq1[i] in NuCoding) and (trimSeq2[i] in NuCoding)):
@@ -213,7 +215,7 @@ def __isConsIden(seq1,seq2,MUSCLE,MinHetVariants):
 def __gapcount(seq):
     gaps = re.findall(r'-(-+)',str(seq))
     gapcount = 0
-    for i in range(len(gaps)):
+    for i in xrange(len(gaps)):
         gaplen = len(gaps[i]) + 1
         gapcount += gaplen
     return gapcount
@@ -225,9 +227,9 @@ def __getVariants(Aligns, ratio = 0.3):
     allvariant = []
     variantBase = {}
     recnum = len(Aligns)
-    for n in range(alignlen):
+    for n in xrange(alignlen):
         base_dict = {}
-        for i in range(recnum):
+        for i in xrange(recnum):
             curbase = Aligns[i].seq[n]
             upbase = curbase.upper()
             if(curbase not in base_dict):
@@ -237,7 +239,7 @@ def __getVariants(Aligns, ratio = 0.3):
 
         filterbases = __baseFilter(base_dict, recnum, ratio)
         if(len(filterbases) > 1):
-            for j in range(recnum):
+            for j in xrange(recnum):
                 curbase = Aligns[j].seq[n]
                 upbase = curbase.upper()
                 if(j in variantBase):
@@ -287,15 +289,15 @@ def __getSeqGroups(alignSeqs, index):
     seqcount = 0
     groupA = []
     groupB = []
-    for i in range(0,index+1):
+    for i in xrange(0,index+1):
         groupA.append(alignSeqs[i].id)
-    for j in range(index+1,len(alignSeqs)):
+    for j in xrange(index+1,len(alignSeqs)):
         groupB.append(alignSeqs[j].id)
     return (groupA, groupB)
 
 def __getSeqs(seqs, seqnames):
     selSeqs = []
-    for i in range(len(seqs)):
+    for i in xrange(len(seqs)):
         if(seqs[i].id in seqnames):
             selSeqs.append(seqs[i])
     return selSeqs
@@ -305,7 +307,7 @@ def __alignscore(seq1, seq2, match = 2, mismatch=-2, gap=-1):
     #(seq1t, seq2t) = trimgap(seq1, seq2)
     score = 0
     seqlen = len(seq1)
-    for i in range(seqlen):
+    for i in xrange(seqlen):
         matchscore = scorematrix.score(seq1[i],seq2[i])
         score += matchscore
     return score
@@ -316,7 +318,7 @@ def __AlignConsensus(alignment):
     gapchar = '-'
     #consuscut = parameters.ConsensusCut
     
-    for n in range(con_len):
+    for n in xrange(con_len):
         
         base_dict = {}
         num_bases = 0
