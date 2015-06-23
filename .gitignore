@@ -6,6 +6,7 @@
 *.zip
 *.gz
 *.tar
+*.dmg
 __pycache__/
 dist/
 build/
