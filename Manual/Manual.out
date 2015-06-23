@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{System requirements}{}% 2
+\BOOKMARK [1][-]{section.3}{Create a new project}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Sequencing Files \(FASTA format; FASTQ format\)}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Barcode File}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Primer File}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Parameters}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Run project}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Barcode and primer identification}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{Generate consensus sequences}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{Dump unmapped reads}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.4}{Search for heterozygous loci}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Open Project}{}% 13
+\BOOKMARK [1][-]{section.6}{Merge Project}{}% 14
+\BOOKMARK [1][-]{section.7}{Result}{}% 15

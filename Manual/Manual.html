@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>MSLTEasy Help Content</title>
+<!-- 2014-07-02 Wed 21:39 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="author" content="Yuan Chen"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012  Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MSLTEasy Help Content</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. System requirements</a></li>
+<li><a href="#sec-3">3. Create a new project</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Sequencing Files (FASTA format; FASTQ format)</a>
+<ul>
+<li><a href="#sec-3-1-1">3.1.1. FASTA Format</a></li>
+<li><a href="#sec-3-1-2">3.1.2. FASTQ Format</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2. Barcode File</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1. Example of barcode file</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">3.3. Primer File</a>
+<ul>
+<li><a href="#sec-3-3-1">3.3.1. Example of primer file</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-4">3.4. Output Folder</a></li>
+<li><a href="#sec-3-5">3.5. Advanced parameters</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Run project</a>
+<ul>
+<li><a href="#sec-4-1">4.1. Barcode and primer identification</a></li>
+<li><a href="#sec-4-2">4.2. Generate consensus sequences</a></li>
+<li><a href="#sec-4-3">4.3. Dump unmapped reads</a></li>
+<li><a href="#sec-4-4">4.4. Search for heterozygous locus</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5. Open Project</a></li>
+<li><a href="#sec-6">6. Merge Projects</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Efficient methods for estimating genetic diversity among the microorganisms are essential for understanding evolutionary history, geographic distribution, pathogenicity and virulence. In the past decades, numerous methods have been developed for typing of bacteria and fungi. Multilocus sequence typing (MLST) based DNA sequencing results, which can be easily archived and shared among different laboratories. MLST is one of the most reliable and informative method for molecular genotyping, and it has been adopted in many bacterial and fungal studies. 
+MLSTEasy was designed for next generation sequencing technology (PacBio CCS or Roche 454 platform) based MSLT methods. MLST-Easy, can automatically identify the barcodes and primers used in the PCR reaction, corrects sequencing errors, generates the MLST profile for each isolate, predicts the potential heterozygous locus, and outputs different alleles. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> System requirements</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+MLSTEasy was written in Python, version 2.7.6. The graphic user interface (GUI) was created by PyQt4 (<a href="http://www.riverbankcomputing.com/software/pyqt/download">http://www.riverbankcomputing.com/software/pyqt/download</a>) and Qt Designer (<a href="http://qt-project.org/doc/qt-4.8/designer-manual.html">http://qt-project.org/doc/qt-4.8/designer-manual.html</a>). Mac version were tested under Mac OS X 10.9, and Windows version were tested under Windows Vista and Windows 7. The software runs on IBM-compatible PC under 32/64-bit Windows, and Mac OS X 10.6+. The minimum hardware requirements for the program are:
+  a processor based on the Intel Pentium 4/AMD Athlon
+  200 MB of RAM memory
+  hard drive with more than 200 MB available space
+  Windows XP or later version, Mac OS X 10.6+ with MUSCLE installed (<a href="http://www.drive5.com/muscle/downloads.htm">http://www.drive5.com/muscle/downloads.htm</a>)
+</p>
+
+<p>
+The recommended hardware requirements for the program are:
+  a multiple core processor based on the Intel Core 2 Due/AMD Athlon II (or higher)
+  4 GB of RAM memory
+  hard drive with more than 1 GB available space
+  Windows XP or later version, Mac OS X 10.6+ with MUSCLE installed (<a href="http://www.drive5.com/muscle/downloads.htm">http://www.drive5.com/muscle/downloads.htm</a>)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Create a new project</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+A new project can be created by clicking the "New Project" button on toolbar or by selecting "Project-&gt;New Project" on menu. Creating a new project requires "Sequencing Files", "Barcode File", "Primer File" and properly set of the "Parameters".
+</p>
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Sequencing Files (FASTA format; FASTQ format)</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+MLSTEasy supports FASTA and FASTQ data file formats. Corresponding data format needs to be selected in the "Advanced" parameters. When you use FASTQ file as input, the corresponding scoring system (phred33 or phred64) needs to be selected in the "Advanced" parameters. Users can obtain the scoring system using FastQC (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a>) or asking the information from sequencing facility. Mutilple files with the same file format and scoring system can be used at one time.
+</p>
+</div>
+<div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> FASTA Format</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+FASTA file format must begin with the symbol '&gt;' in the first line of the file; the sequence name is the first word after that symbol. Additional characters in this line are considered to be comments. The sequence data starts in the second line. Nucleotide data can be written in one or more lines. For more detail informaiton of FASTA Format please check <a href="http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml">http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml</a> for more details. 
+</p>
+</div>
+<ol class="org-ol"><li>Example of FASTA format<br/><div class="outline-text-5" id="text-3-1-1-1">
+<pre class="example" id="FastaSample">
+&gt;m140505
+AGACTGGACCCACAGCGGGCGAGAGAAGTACAAGCCCCCGCGACTGGAGTAATTCTTAGT
+GATCATTAATCTTTTCTAGACTTTGCTTGACTGAGCTTGACTCAACTTAAAACGTTTGCT
+TGACCAGCCTATTAGAGCCACCGTCAGGTCGGGTCAACAACTATTCAAAGTTTGATTTGC
+CCATCCCCTCTTTGACTATGCTATAAGCACACCCACTGCATACACTTGGCAGCCCCCCCC
+&gt;m140507
+AAGACTGGACCCACAGCGGGCGAGAGAAGTTACAAGCCCCCCGCGACTGGAGTAATTCTT
+AGTGATCATTAATCTTTTCTAGACTTTGCTTGACTGAGCTTGACTCAACTTAAAACGTTT
+GCTTGACCAGCCTATTAGAGCCACCGTCAGGTCGGGTCAACAACTATTCAAAGTTTGATT
+GCCCATCCCCTCTTGACTATGCTATAAGCACACCCACTGCATACACTTGGCAGCCCCCCT
+&gt;m140510
+AGACTGGACCCACAGCGGGCGAGAGAAGTTACAGGCCCCCCGCGACTGGAGTAATCCTTA
+TGATCATTAATCTTTTCTAGACTTTGCTTGACTGAGCTTGACTCAACTTAAAACGTTTG
+CTTGACCAGCCTATTAGAGCCACCGTCAGGTCGGGTCAACAACTATTCAAAGTTTGATTG
+CCCATCCCCTCTTGACTATGCTATAAGCACACCCACTGCATACACTTGGCAGCCCCCCCT
+CTCACCATCCATACCGCATTTACCCATTTTTCATTCCGGCTCACTACCACTATCAAAGTC
+CCCCACGACTGGAAAAGTAACAAATACTAGTACTATAATACTAATACTAATTGACTTGCT
+</pre>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> FASTQ Format</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+A FASTQ file normally uses four lines per sequence. The first line begins with a '@' character and is followed by a sequence identifier and an optional description (like a FASTA title line); the second line is the rw sequence letters; the third line begins with a '+' character and is optionally followed by the same sequence identifier (and any description) again; and the last line encodes the quality values for the sequence in Line 2, and must contain the same number of symbols as letters in the sequence. 
+</p>
+</div>
+<ol class="org-ol"><li>Example of FASTQ format<br/><div class="outline-text-5" id="text-3-1-2-1">
+<pre class="example" id="FASTQSample">
+@NCYC361-11a03.q1k bases 1 to 1576
+GCGTGCCCGAAAAAATGCTTTTGGAGCCGCGCGTGAAAT...
++NCYC361-11a03.q1k bases 1 to 1576
+!)))))****(((***%%((((*(((+,**(((+**+,-...
+</pre>
+</div>
+</li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Barcode File</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+MLSTEasy uses CSV file for importing barcode information. Users can use Microsoft Excel to generate CSV file using "Save As&#x2026;" and selecting "Comma Seperated Values .csv" as output format. The barcode file only contains two columns. The first column contains barcode sequences, which do not contains padding sequence or universal primer. The second column contains the names of strains/samples related to the barcodes in the first column. Current version of MLSTEasy only support symmetric barcode design in experiment. Asymmetric barcode design will be supported in future. 
+</p>
+</div>
+<div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Example of barcode file</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<pre class="example" id="barcodesample">
+gcgctctgtgtgcagc,StrainA
+agagtactacatatga,StrainB
+tcatgagtcgacacta,StrainC
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Primer File</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+CSV file is used for importing primer information in MLSTEasy. The primer file contains three columns, which are locus name, upper primer of locus and lower primer of locus. Universal primer sequence should be removed from upper/lower primer sequences. 
+</p>
+</div>
+<div id="outline-container-sec-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> Example of primer file</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<pre class="example" id="primersample">
+LOCUS1,TCTAATCGAAATGGTCAAGG,CGCAGCTGTTCGTCTGGATA
+LOCUS2,AATCGTCAAGGAGACCAACG,CGTCACCAGACTTGACGAAC
+LOCUS3,GATGGTTATGAACGAGAGGT,CTTACAGTCAGTATCGGACT
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> Output Folder</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+The output folder is used to store the project file, project.nma, and other results including consensus sequence for each loci, unmapped reads and allele sequences for heterozygous loci. Same output folder cannot be used for different project, otherwise, the project file and other output files will be overwritten by the newly built project. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> Advanced parameters</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+All the advanced parameters are automatically saved in system after first time use. User can click "Advanced" button to expand the parameter panel in order to change the settings. The parameters are set according to following instructions:
+</p>
+<ol class="org-ol">
+<li>File Format (default "FASTQ"): File format of input sequence file. 
+</li>
+<li>Score Type (default "Phred 32"): Phred quality score of FASTQ file. If FASTA file is used as input sequence file, this option will not be valid.
+</li>
+<li>MUSCLE: Full path name (including file name) of MUSCLE. For example: /Users/YOURUSERNAME/bin/muscle-3.6/muscle on Mac OS or c:\muscle-3.6\muscle<sub>i86win32</sub>.exe on Windows. MUSCLE can be downloaded from <a href="http://www.drive5.com/muscle/downloads.htm">http://www.drive5.com/muscle/downloads.htm</a> for free. 
+</li>
+<li>Padding Sequence (default "GGTAG"): The padding sequence of the barcode primer for the second PCR round. Please check the reference for more details. 
+</li>
+<li>Universal Primer (default "CTGGAGCACGAGGACACTGA"): The universal primer sequence of the first and second PCR rounds. Please check the reference for more details. 
+</li>
+<li>Barcode Length (default 16): Length barcode sequence in the barcode primer for the second PCR rounds. This length should be barcode sequence only, which does not count padding sequence and universal primer sequence in. 
+</li>
+<li>Min Read Depth (default 3): The minimal number of reads used to generate the consensus sequence for each locus. With smaller number, the user can obtain more consensus sequence on low coverage locus, but some of them may have higher sequencing error rate.
+</li>
+<li>Max Read Depth (default 10): The maximal number of reads used to generate the consensus sequence for each locus. Larger number usage can lower the software effiency and may or may not increase the accuracy of the consensus sequence. Please check the reference for more details. 
+</li>
+<li>Flanking Length (default 5): The flanking region length that the software used to search for barcode and primer sequences in sequencing reads. For example, when flanking length 5 is used, if the padding sequence length is 5 bp, and the barcode sequence length is 16 bp, the software will use the region between 0 (5-5) - 21 (16+5) bp on the 5' of sequencing read and the corresponding region on 3' of the read to look for the barcode sequence. 
+</li>
+<li>Match Score (default 2): The match score of the Smith-Waterman algorithm for barcode and primer identification.
+</li>
+<li>Mismatch Score (default -1): The mismatch score of the Smith-Waterman algorithm for barcode and primer identification.
+</li>
+<li>Gap Score (default -1): The gap score of the Smith-Waterman algorithm for barcode and primer identification.
+</li>
+<li>Max Mismatch (default 3): The maximal number of the mismatches occurs in one alignment.
+</li>
+<li>Threads (default 1): The thread number that can be used for parallel search barcode/primer sequence and heterozygous locus. Each thread runs on different processor/core and all threads run in parallel. Please select proper number based on processors/cores based on the computer's hardware. 
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Run project</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+MLSTEasy has four major functions in data analysis:
+</p>
+<ol class="org-ol">
+<li>Barcode and primer identification
+</li>
+<li>Generate consensus sequences
+</li>
+<li>Dump unmapped reads
+</li>
+<li>Heterozygous loci identification
+</li>
+</ol>
+<p>
+After user has created a project, user can click "project setting" button in toolbar or select "Job settings" in "Project" menu to choose programs in the analysis. User can select "Run the whole process", which will run all four programs one by one. Alternatly, user also can selected one to several programs they interested in. After programs are selected, the "Run" button/menu will be enabled. 
+</p>
+</div>
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Barcode and primer identification</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+This function is used to identify barcodes and primers in the sequencing reads, and it is necessary for the other three functions. Smith-Waterman algorithm is used for identification the barcode and primer sequences in the reads based on user settings (see "Advanced parameters"). After the analysis, MLSTEasy will show "Read Length", "Alignment Ratio", "Length Range" and "Sample Stats" in the software interface.
+</p>
+<ul class="org-ul">
+<li>Read Length: Barplot shows length distribution of all sequencing reads in the project
+</li>
+<li>Alignment Ratio: Pie chart shows the ratio of barcode and primer identified reads in all reads
+</li>
+<li>Length Range: Boxplot shows the length distribution of each locus. Blue "+" stands for outlier.
+</li>
+<li>Sample Stats: Table shows the read number of each locus of each sample and total read number of each sample. The number in the brackets is the total read number identified for certain locus of the sample, and the number outside the brackets is the valid read number, which stands for the number of reads after filtered by the length range. If the valid read number is less than the minimal read number for generate the consensus (see "Advanced parameters"), this locus will shows with grey background, which means no consensus sequence will be generated for this locus. Double click on the locus grid will open a window, which shows the "Trimmed" reads (reads without primer sequences) and "Untrimmed" reads (raw reads).
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Generate consensus sequences</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+The consensus sequences will be generated for the locus with more than minimal number of valid reads. All the consensus sequences will be output into the "Output Folder" in FASTA format automatically. Each locus will be output as single file named with "cons.LOCUSNAME.fasta", and each consensus is named with the locus name and sample name. The barcode and primer sequences have removed from the consensus, and the sequence directions have been adjusted based on the given upper and lower primers. A table of all sample loci will be shown in the main interface after analysis is completed. Double click on the the sample name shows all the generated consensus sequences for the sample, and double click on single locus shows the corresponding consensus sequence. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Dump unmapped reads</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+The reads failed to identify by barcode or primer sequences can be output by this function for further analysis. The output file is stored in "Output Folder" named with "UnmappedReads.seq". Sequences after &lt;NoBarcode&gt; are the reads that are failed to identify barcode on one or both ends. Sequences after certain barcode sequences are the reads that are failed to identify primer sequences on one or both ends after barcode indentification.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> Search for heterozygous locus</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+MLSTEasy can identify possible heterozygous locus based on the sequence differences among the reads. Five valid reads is the minimal requirements for the analysis. If two different sequence clusters are identified, the software will generate consensus sequences for both clusters. A possible heterozygous locus requires more than three nucleotide differences among the two concensus sequences. A table view of the result are shown in the main interface. The locus labelled and "Yes" and orange background indicate this locus might be a heterozygous locus. Double click the grid will show the consensus sequences for both alleles. The locus labelled with "NA" indicates the read number is less than the minimal requirements for this analysis. All the consensus sequences are saved in "Het.cons.fasta" under "Output Folder". The consensus sequences are named with SAMPLENAME<sub>LOCUSNAME</sub><sub>allele1</sub>/2.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Open Project</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+All of the project information is saved in "project.nma" under "Output Folder" automatically. User can open a existing project by clicking "Open Project" button in toolbar or by selecting "Open Project" in "Project" menu and then select the folder that was used as "Output Folder" before. All the results will be loaded in the software, and the user can even run the analysis functions that have not been processed. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Merge Projects</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+The project merge function is designed for the samples that have been sequenced more than once in different batches in order to get higher read coverage. Different project can be merged together based on the sample names. The sequence reads identified by the sample name in different project will be merged together. After the merge step, user can "generate consensus sequences", "dump the unmapped reads" and identify the heteozygous locus using the merged data. 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Yuan Chen</p>
+<p class="date">Created: 2014-07-02 Wed 21:39</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.2 (<a href="http://orgmode.org">Org</a> mode 8.0.3)</p>
+<p class="xhtml-validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+</div>
+</body>
+</html>

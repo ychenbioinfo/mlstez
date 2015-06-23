@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {2}System requirements}{1}{section.2}
+\contentsline {section}{\numberline {3}Create a new project}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Sequencing Files (FASTA format; FASTQ format)}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Barcode File}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Primer File}{4}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Parameters}{4}{subsection.3.4}
+\contentsline {section}{\numberline {4}Run project}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Barcode and primer identification}{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Generate consensus sequences}{4}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Dump unmapped reads}{4}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Search for heterozygous loci}{4}{subsection.4.4}
+\contentsline {section}{\numberline {5}Open Project}{4}{section.5}
+\contentsline {section}{\numberline {6}Merge Project}{4}{section.6}
+\contentsline {section}{\numberline {7}Result}{4}{section.7}

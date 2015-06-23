@@ -18,7 +18,7 @@
 * Create a new project
   A new project can be created by clicking the "New Project" button on toolbar or by selecting "Project->New Project" on menu. Creating a new project requires "Sequencing Files", "Barcode File", "Primer File" and properly set of the "Parameters".
 ** Sequencing Files (FASTA format; FASTQ format)
-  MLSTEasy supports FASTA and FASTQ data file formats. Corresponding data format needs to be selected in the "Advanced" parameters. When you use FASTQ file as input, the corresponding scoring system (phred33 or phred64) needs to be selected in the "Advanced" parameters. Users can obtain the scoring system using FastQC (http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) or asking the information from sequencing facility. Mutilple files with the same file format and scoring system can be used at one time.
+  MLSTEZ supports FASTA and FASTQ data file formats. Corresponding data format needs to be selected in the "Advanced" parameters. When you use FASTQ file as input, the corresponding scoring system (phred33 or phred64) needs to be selected in the "Advanced" parameters. Users can obtain the scoring system using FastQC (http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) or asking the information from sequencing facility. Mutilple files with the same file format and scoring system can be used at one time.
 *** FASTA Format
   FASTA file format must begin with the symbol '>' in the first line of the file; the sequence name is the first word after that symbol. Additional characters in this line are considered to be comments. The sequence data starts in the second line. Nucleotide data can be written in one or more lines. For more detail informaiton of FASTA Format please check http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml for more details. 
 **** Example of FASTA format
@@ -53,8 +53,16 @@ GCGTGCCCGAAAAAATGCTTTTGGAGCCGCGCGTGAAAT...
 !)))))****(((***%%((((*(((+,**(((+**+,-...
 #+END_SRC
 ** Barcode File
-  MLSTEasy uses CSV file for importing barcode information. Users can use Microsoft Excel to generate CSV file using "Save As..." and selecting "Comma Seperated Values .csv" as output format. The barcode file only contains two columns. The first column contains barcode sequences, which do not contains padding sequence or universal primer. The second column contains the names of strains/samples related to the barcodes in the first column. Current version of MLSTEasy only support symmetric barcode design in experiment. Asymmetric barcode design will be supported in future. 
-*** Example of barcode file
+  MLSTEZ uses CSV file for importing barcode information. Users can use Microsoft Excel to generate CSV file using "Save As..." and selecting "Comma Seperated Values .csv" as output format. MLSTEZ 2.0 supports asymmetric barcode design, so you can save more money and put more samples into one batch. The new barcode file contains two (symmetric design) or three columns (asymmetric design). MLSTEZ 2.0 will switch between different modes based on the columns provided in the barcode file. The second column contains the names of strains/samples related to the barcodes in the first column, and the second column contains barcode sequences, which do not contains padding sequence or universal primer.
+*** Example of barcode file for MLSTEZ 2.0
+#+NAME: barcodesample2.0
+#+BEGIN_SRC
+Isolates_A,gcgctctgtgtgcagc,gcgctctgtgtgcagc
+Isolates_B,agagtactacatatga,agagtactacatatga
+Isolates_C,cgtgtgcatagatcgc,cgtgtgcatagatcgc
+Isolates_D,atgtatctcgactgca,atgtatctcgactgca
+#+END_SRC
+*** Example of barcode file MLSTEZ 1.0
 #+NAME: barcodesample
 #+BEGIN_SRC
 gcgctctgtgtgcagc,StrainA
@@ -62,7 +70,7 @@ agagtactacatatga,StrainB
 tcatgagtcgacacta,StrainC
 #+END_SRC
 ** Primer File
-  CSV file is used for importing primer information in MLSTEasy. The primer file contains three columns, which are locus name, upper primer of locus and lower primer of locus. Universal primer sequence should be removed from upper/lower primer sequences. 
+  CSV file is used for importing primer information in MLSTEZ. The primer file contains three columns, which are locus name, upper primer of locus and lower primer of locus. Universal primer sequence should be removed from upper/lower primer sequences. 
 *** Example of primer file
 #+NAME: primersample
 #+BEGIN_SRC
@@ -89,14 +97,14 @@ LOCUS3,GATGGTTATGAACGAGAGGT,CTTACAGTCAGTATCGGACT
 13. Max Mismatch (default 3): The maximal number of the mismatches occurs in one alignment.
 14. Threads (default 1): The thread number that can be used for parallel search barcode/primer sequence and heterozygous locus. Each thread runs on different processor/core and all threads run in parallel. Please select proper number based on processors/cores based on the computer's hardware. 
 * Run project
-MLSTEasy has four major functions in data analysis:
+MLSTEZ has four major functions in data analysis:
 1) Barcode and primer identification
 2) Generate consensus sequences
 3) Dump unmapped reads
 4) Heterozygous loci identification
 After user has created a project, user can click "project setting" button in toolbar or select "Job settings" in "Project" menu to choose programs in the analysis. User can select "Run the whole process", which will run all four programs one by one. Alternatly, user also can selected one to several programs they interested in. After programs are selected, the "Run" button/menu will be enabled. 
 ** Barcode and primer identification
-This function is used to identify barcodes and primers in the sequencing reads, and it is necessary for the other three functions. Smith-Waterman algorithm is used for identification the barcode and primer sequences in the reads based on user settings (see "Advanced parameters"). After the analysis, MLSTEasy will show "Read Length", "Alignment Ratio", "Length Range" and "Sample Stats" in the software interface.
+This function is used to identify barcodes and primers in the sequencing reads, and it is necessary for the other three functions. Smith-Waterman algorithm is used for identification the barcode and primer sequences in the reads based on user settings (see "Advanced parameters"). After the analysis, MLSTEZ will show "Read Length", "Alignment Ratio", "Length Range" and "Sample Stats" in the software interface.
 + Read length dist: Barplot shows length distribution of all sequencing reads in the project
 + Alignment ratio: Pie chart shows the ratio of barcode and primer identified reads in all reads
 + Length ranges: Boxplot shows the length distribution of each locus. Blue "+" stands for outlier.
@@ -106,7 +114,7 @@ The consensus sequences will be generated for the locus with more than minimal n
 ** Dump unmapped reads
 The reads failed to identify by barcode or primer sequences can be output by this function for further analysis. The output file is stored in "Output Folder" named with "UnmappedReads.seq". Sequences after <NoBarcode> are the reads that are failed to identify barcode on one or both ends. Sequences after certain barcode sequences are the reads that are failed to identify primer sequences on one or both ends after barcode indentification.
 ** Search for heterozygous locus
-MLSTEasy can identify possible heterozygous locus based on the sequence differences among the reads. Five valid reads is the minimal requirements for the analysis. If two different sequence clusters are identified, the software will generate consensus sequences for both clusters. A possible heterozygous locus requires more than three nucleotide differences among the two concensus sequences. A table view of the result are shown in the main interface. The locus labelled and "Yes" and orange background indicate this locus might be a heterozygous locus. Double click the grid will show the consensus sequences for both alleles. The locus labelled with "NA" indicates the read number is less than the minimal requirements for this analysis. All the consensus sequences are saved in "Het.cons.fasta" under "Output Folder". The consensus sequences are named with SAMPLENAME_LOCUSNAME_allele1/2.
+MLSTEZ can identify possible heterozygous locus based on the sequence differences among the reads. Five valid reads is the minimal requirements for the analysis. If two different sequence clusters are identified, the software will generate consensus sequences for both clusters. A possible heterozygous locus requires more than three nucleotide differences among the two concensus sequences. A table view of the result are shown in the main interface. The locus labelled and "Yes" and orange background indicate this locus might be a heterozygous locus. Double click the grid will show the consensus sequences for both alleles. The locus labelled with "NA" indicates the read number is less than the minimal requirements for this analysis. All the consensus sequences are saved in "Het.cons.fasta" under "Output Folder". The consensus sequences are named with SAMPLENAME_LOCUSNAME_allele1/2.
 * Open Project
 All of the project information is saved in "project.nma" under "Output Folder" automatically. User can open a existing project by clicking "Open Project" button in toolbar or by selecting "Open Project" in "Project" menu and then select the folder that was used as "Output Folder" before. All the results will be loaded in the software, and the user can even run the analysis functions that have not been processed. 
 * Merge Projects
