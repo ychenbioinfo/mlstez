@@ -506,7 +506,7 @@ class MainWindow(QMainWindow):
             fh = gzip.open(infofile, "wb")
             pickle.dump(projinfo, fh)
         except Exception as e:
-            QMessageBox.warning(self.mainframe, "Error",("Error: %s" %error),
+            QMessageBox.warning(self.mainframe, "Error",("Error: %s" %e),
                                             QMessageBox.Ok|QMessageBox.Default)
         return
     
