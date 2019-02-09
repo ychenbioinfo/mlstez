@@ -1,14 +1,15 @@
 import os
 import platform
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from qrc_resources import *
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from time import time
 import matplotlib.pyplot as plt
 import random
-import cPickle as pickle
+import pickle as pickle
 from os.path import isfile
 import gzip
 import multiprocessing
@@ -29,7 +30,7 @@ class MainWindow(QMainWindow):
         ##------------
         #  main frame
         ##----------
-        super (MainWindow, self).__init__(parent)
+        super(MainWindow, self).__init__(parent)
         self.paraTree = QTreeWidget()
         self.paraTree.setColumnCount(1)
         self.paraTree.setHeaderLabels([""]) 
@@ -139,9 +140,9 @@ class MainWindow(QMainWindow):
       
     def __initUi(self):
         settings = QSettings("CYSoft", "MLSTEZ")
-        size = settings.value("MainWindow/Size", QVariant(QSize(850, 600))).toSize()
+        size = settings.value("MainWindow/Size", QVariant(QSize(850, 600)))
         self.resize(size)
-        position = settings.value("MainWindow/Position", QVariant(QPoint(0,0))).toPoint()
+        position = settings.value("MainWindow/Position", QVariant(QPoint(0,0)))
         self.move(position)
         self.setWindowTitle("MLSTEZ")
         #self.restoreState(settings.value("MainWindow/State").toByteArray())
@@ -149,26 +150,26 @@ class MainWindow(QMainWindow):
         self.__btninitStat()
         
         paras = Parameters.Parameters()
-        paras.Filetype = str(settings.value("Paras/Filetype","FASTQ").toString())
-        paras.MuscleCMD = str(settings.value("Paras/MuscleCMD","").toString())
-        paras.ScoringSys = str(settings.value("Paras/ScoringSys", "phred33").toString())
-        paras.PadSeq = str(settings.value("Paras/PadSeq", "GGTAG").toString())
-        paras.UniPrimer = str(settings.value("Paras/UniPrimer", "CTGGAGCACGAGGACACTGA").toString())
-        paras.BarcodeLen = settings.value("Paras/BarcodeLen", 16).toInt()[0]
-        paras.MinReadNum = settings.value("Paras/MinReadNum", 3).toInt()[0]
-        paras.MaxReadNum = settings.value("Paras/MaxReadNum", 10).toInt()[0]
-        paras.FlankingLength = settings.value("Paras/FlankingLength", 5).toInt()[0]
-        paras.MatchScore = settings.value("Paras/MatchScore", 2).toInt()[0]
-        paras.MismatchScore = settings.value("Paras/MismatchScore", -1).toInt()[0]
-        paras.GapScore = settings.value("Paras/GapScore", -1).toInt()[0]
-        paras.MaxMisMatch = settings.value("Paras/MaxMisMatch", 3).toInt()[0]
-        paras.Threads = settings.value("Paras/Threads", 1).toInt()[0]
+        paras.Filetype = settings.value("Paras/Filetype","FASTQ")
+        paras.MuscleCMD = settings.value("Paras/MuscleCMD","")
+        paras.ScoringSys = settings.value("Paras/ScoringSys", "phred33")
+        paras.PadSeq = settings.value("Paras/PadSeq", "GGTAG")
+        paras.UniPrimer = settings.value("Paras/UniPrimer", "CTGGAGCACGAGGACACTGA")
+        paras.BarcodeLen = settings.value("Paras/BarcodeLen", 16)
+        paras.MinReadNum = settings.value("Paras/MinReadNum", 3)
+        paras.MaxReadNum = settings.value("Paras/MaxReadNum", 10)
+        paras.FlankingLength = settings.value("Paras/FlankingLength", 5)
+        paras.MatchScore = settings.value("Paras/MatchScore", 2)
+        paras.MismatchScore = settings.value("Paras/MismatchScore", -1)
+        paras.GapScore = settings.value("Paras/GapScore", -1)
+        paras.MaxMisMatch = settings.value("Paras/MaxMisMatch", 3)
+        paras.Threads = settings.value("Paras/Threads", 1)
         #paras.ConsensusCut = settings.value("Paras/ConsensusCut", 0.5).toFloat()[0]
         self.parameters = paras
         
         #---renew viewer&tree status
         if self.dirty:
-            for i in reversed(range(self.viewerLayout.count())):
+            for i in reversed(list(range(self.viewerLayout.count()))):
                 self.viewerLayout.itemAt(i).widget().setParent(None)
             
             #for viewer in self.viewerDict:
@@ -227,7 +228,7 @@ class MainWindow(QMainWindow):
             action.setToolTip(tip)
             action.setStatusTip(tip)
         if slot is not None:
-            self.connect(action, SIGNAL(signal), slot)
+            action.triggered.connect(slot)
         if checkable:
             action.setCheckable(True)
         return action

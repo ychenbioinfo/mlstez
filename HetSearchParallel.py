@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import division
+
 import tempfile
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -190,7 +190,7 @@ def __isConsIden(seq1,seq2,MUSCLE,MinHetVariants):
     if(str(trimSeq1) == str(trimSeq2)):
         return True
     vCount = 0
-    for i in xrange(len(trimSeq1)):
+    for i in range(len(trimSeq1)):
         if(trimSeq1[i] != trimSeq2[i]):
             if(trimSeq1[i] != '-' and trimSeq2[i] != '-'):
                 if((trimSeq1[i] in NuCoding) and (trimSeq2[i] in NuCoding)):
@@ -215,7 +215,7 @@ def __isConsIden(seq1,seq2,MUSCLE,MinHetVariants):
 def __gapcount(seq):
     gaps = re.findall(r'-(-+)',str(seq))
     gapcount = 0
-    for i in xrange(len(gaps)):
+    for i in range(len(gaps)):
         gaplen = len(gaps[i]) + 1
         gapcount += gaplen
     return gapcount
@@ -227,9 +227,9 @@ def __getVariants(Aligns, ratio = 0.3):
     allvariant = []
     variantBase = {}
     recnum = len(Aligns)
-    for n in xrange(alignlen):
+    for n in range(alignlen):
         base_dict = {}
-        for i in xrange(recnum):
+        for i in range(recnum):
             curbase = Aligns[i].seq[n]
             upbase = curbase.upper()
             if(curbase not in base_dict):
@@ -239,7 +239,7 @@ def __getVariants(Aligns, ratio = 0.3):
 
         filterbases = __baseFilter(base_dict, recnum, ratio)
         if(len(filterbases) > 1):
-            for j in xrange(recnum):
+            for j in range(recnum):
                 curbase = Aligns[j].seq[n]
                 upbase = curbase.upper()
                 if(j in variantBase):
@@ -289,15 +289,15 @@ def __getSeqGroups(alignSeqs, index):
     seqcount = 0
     groupA = []
     groupB = []
-    for i in xrange(0,index+1):
+    for i in range(0,index+1):
         groupA.append(alignSeqs[i].id)
-    for j in xrange(index+1,len(alignSeqs)):
+    for j in range(index+1,len(alignSeqs)):
         groupB.append(alignSeqs[j].id)
     return (groupA, groupB)
 
 def __getSeqs(seqs, seqnames):
     selSeqs = []
-    for i in xrange(len(seqs)):
+    for i in range(len(seqs)):
         if(seqs[i].id in seqnames):
             selSeqs.append(seqs[i])
     return selSeqs
@@ -307,7 +307,7 @@ def __alignscore(seq1, seq2, match = 2, mismatch=-2, gap=-1):
     #(seq1t, seq2t) = trimgap(seq1, seq2)
     score = 0
     seqlen = len(seq1)
-    for i in xrange(seqlen):
+    for i in range(seqlen):
         matchscore = scorematrix.score(seq1[i],seq2[i])
         score += matchscore
     return score
@@ -318,7 +318,7 @@ def __AlignConsensus(alignment):
     gapchar = '-'
     #consuscut = parameters.ConsensusCut
     
-    for n in xrange(con_len):
+    for n in range(con_len):
         
         base_dict = {}
         num_bases = 0

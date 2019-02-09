@@ -81,7 +81,7 @@ class AlignRes(object):
         else:
             best = 0
             bestscore = self.aligns[0].lscore + self.aligns[0].rscore
-            for i in xrange(0,len(self.aligns)):
+            for i in range(0,len(self.aligns)):
                 score = self.aligns[i].lscore + self.aligns[i].rscore
             if(score > bestscore):
                 best = i
@@ -108,7 +108,7 @@ class SeqAlignments(object):
         self.msgHandle.showMsg("Searching for barcodes in reads...")
         groupnum = int(len(self.seqs)/self.threadNum)
         self.seqgroups = []
-        for i in xrange(self.threadNum):
+        for i in range(self.threadNum):
             startnum = groupnum * i
             endnum = groupnum * (i+1)
             if(i == self.threadNum - 1):
@@ -123,7 +123,7 @@ class SeqAlignments(object):
         unbarcode = manager.list()
         unprimer = manager.list()
     
-        for i in xrange(self.threadNum):
+        for i in range(self.threadNum):
             child = Process(target=BarcodeSearch,
                             args=(self.paras, self.seqgroups[i],
                                   self.barcodes, stats, alignedseqs, unbarcode))
@@ -147,7 +147,7 @@ class SeqAlignments(object):
         self.workers = []
         self.msgHandle.showMsg("Searching for primers in reads...")
     
-        for i in xrange(self.threadNum):
+        for i in range(self.threadNum):
             child = Process(target=PrimerSearch,
                             args=(self.paras, alignedseqs[i],
                                   self.primers, stats, unprimer,primeredseqs))

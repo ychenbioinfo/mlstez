@@ -80,7 +80,7 @@ class AlignRes(object):
         else:
             best = 0
             bestscore = self.aligns[0].lscore + self.aligns[0].rscore
-            for i in xrange(0,len(self.aligns)):
+            for i in range(0,len(self.aligns)):
                 score = self.aligns[i].lscore + self.aligns[i].rscore
             if(score > bestscore):
                 best = i
@@ -394,7 +394,7 @@ class ConsensusSeqs(object):
         gapchar = '-'
         #consuscut = self.parameters.ConsensusCut
         
-        for n in xrange(con_len):
+        for n in range(con_len):
             
             base_dict = {}
             num_bases = 0

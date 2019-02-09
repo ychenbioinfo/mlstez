@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import division
+
 import tempfile
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -34,11 +34,11 @@ def __isHetero(variantBases, maxpvalue, minreadratio):
             seq2 = variantBases[i+1]
             score = __alignscore(seq1, seq2)
             scores.append(score)
-            print ("seq1 %s - seq2 %s: %s" %(i, i+1, score))
+            print(("seq1 %s - seq2 %s: %s" %(i, i+1, score)))
         isunique, scoreinfo = __minScore(scores, minreadratio)
         if(isunique):
             t_statistic, p_value = ttest_1samp(scoreinfo['scores'], scoreinfo['minscore'])
-            print("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value))
+            print(("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value)))
             if(p_value <= maxpvalue):
                 print ("Is hetero!")
                 return (True, scoreinfo['minindex'])

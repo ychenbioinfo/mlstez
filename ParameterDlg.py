@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import ui_parameterdlg
 import Parameters
 import sys
@@ -80,39 +81,39 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     
     @pyqtSlot()
     def on_addseqfileButton_clicked(self):
-        filename = str(QFileDialog.getOpenFileName(self, 'Add file', 
-                self.workingpath))
+        filename, _ = QFileDialog.getOpenFileName(self, 'Add file',
+                self.workingpath)
         if(filename):
             self.__addSeqFiles(filename)
             self.workingpath = dirname(filename)
     
     @pyqtSlot()
     def on_barcodefileButton_clicked(self):
-        filename = str(QFileDialog.getOpenFileName(self, 'Barcode file', 
-                self.workingpath))
+        filename, _ = QFileDialog.getOpenFileName(self, 'Barcode file',
+                self.workingpath)
         if(filename):
             self.barcodefileLineEdit.setText(filename)
             self.workingpath = dirname(filename)
     
     @pyqtSlot()
     def on_primerfileButton_clicked(self):
-        filename = str(QFileDialog.getOpenFileName(self, 'Primer file', 
-                self.workingpath))
+        filename, _ = QFileDialog.getOpenFileName(self, 'Primer file',
+                self.workingpath)
         if(filename):
             self.primerfileLineEdit.setText(filename)
             self.workingpath = dirname(filename)
     
     @pyqtSlot()
     def on_outfolderButton_clicked(self):
-        foldername = str(QFileDialog.getExistingDirectory(self, 'Output Folder', 
-                self.workingpath))
+        foldername = QFileDialog.getExistingDirectory(self, 'Output Folder',
+                self.workingpath)
         if(foldername):
             self.outfolderLineEdit.setText(foldername)
             
     @pyqtSlot()
     def on_muscleButton_clicked(self):
-        filename = str(QFileDialog.getOpenFileName(self, 'MUSCLE', 
-                self.workingpath))
+        filename, _ = QFileDialog.getOpenFileName(self, 'MUSCLE',
+                self.workingpath)
         if(filename):
             self.muscleLineEdit.setText(filename)
             self.workingpath = dirname(filename)
@@ -149,26 +150,26 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
             return
         
         if(isdir((self.outfolderLineEdit.text()))):
-            self.parameters.Out_Folder = str(self.outfolderLineEdit.text())
+            self.parameters.Out_Folder = self.outfolderLineEdit.text()
         else:
             return
         
         if(self.__checkFileExist(self.primerfileLineEdit.text())):
-            self.parameters.Primer_File = str(self.primerfileLineEdit.text())
+            self.parameters.Primer_File = self.primerfileLineEdit.text()
         else:
             return
         
         if(self.__checkFileExist(self.barcodefileLineEdit.text())):
-            self.parameters.Barcode_File = str(self.barcodefileLineEdit.text())
+            self.parameters.Barcode_File = self.barcodefileLineEdit.text()
         else:
             return
         
         if(self.__checkFileExist(self.muscleLineEdit.text())):
-            self.parameters.MuscleCMD = str(self.muscleLineEdit.text())
+            self.parameters.MuscleCMD = self.muscleLineEdit.text()
         else:
             return
         
-        self.parameters.ProjectName = str(self.projnameLineEdit.text())
+        self.parameters.ProjectName = self.projnameLineEdit.text()
         if(self.fastqRadioBtn.isChecked()):
             self.parameters.Filetype = "FASTQ"
         else:
@@ -178,9 +179,9 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
         else:
             self.parameters.ScoringSys = "phred64"
 
-        self.parameters.PadSeq = str(self.paddingEditLine.text()).upper()
+        self.parameters.PadSeq = self.paddingEditLine.text().upper()
         self.parameters.PadLength = len(self.parameters.PadSeq)
-        self.parameters.UniPrimer = str(self.uniprimerLineEdit.text()).upper()
+        self.parameters.UniPrimer = self.uniprimerLineEdit.text().upper()
         self.parameters.UniLength = len(self.parameters.UniPrimer)
         self.parameters.BarcodeLen = self.barcodelenSpinBox.value()
         self.parameters.MinReadNum = self.mindepthSpinBox.value()
@@ -222,7 +223,7 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
         filenames = []
         for count in range(filecount):
             item = self.seqfileListWidget.item(count)
-            filename = str(item.text())
+            filename = item.text()
             if(not self.__checkFileExist(filename)):
                 return (None, False)
             filenames.append(filename)

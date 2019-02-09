@@ -20,21 +20,21 @@ def FileModule():
     print ("Sort sequencing...")
     isokay, error = projEnv.sortAlignedSeqs()
     if(not isokay):
-        print ("Error: %s" %error)
+        print(("Error: %s" %error))
     sortedseqs = projEnv.SortedSeqs
     print ("Calculate length...")
     isokay, error = projEnv.locusLengths()
     if(not isokay):
-        print ("Error: %s" %error)
+        print(("Error: %s" %error))
     locusRange = projEnv.locusLengthRange
     print ("Generate Consensus Sequences...")
     isokay, error = projEnv.GenerateConsensus()
     if(not isokay):
-        print ("Error: %s" %error)
+        print(("Error: %s" %error))
     consSeqs = projEnv.consSeqs
     projEnv.DumpUnmappedReads()
     t1 = time()
-    print ("Time spends %.2fs." %(t1-t0))
+    print(("Time spends %.2fs." %(t1-t0)))
 
 
 if(__name__ == '__main__'):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import division
+
 import tempfile
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -114,7 +114,7 @@ class HeteroSearch(object):
                 return (False, 0)
             else:
                 t_statistic, p_value = ttest_1samp(scoreinfo['scores'], scoreinfo['minscore'])
-                print("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value))
+                print(("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value)))
                 if(p_value <= maxpvalue):
                     print ("Is hetero!")
                     return (True, scoreinfo['minindex'])
@@ -352,7 +352,7 @@ def SearchVariance(Aligns, ratio = 0.3):
             else:
                 base_dict[curbase] += 1
         if(n == 50):
-            print "AAA"
+            print("AAA")
         filterbases = baseFilter(base_dict, recnum, ratio)
         if(len(filterbases) > 1):
             for j in range(recnum):
@@ -406,7 +406,7 @@ def _AlignConsensus(self, alignment):
     gapchar = '-'
     #consuscut = self.parameters.ConsensusCut
     
-    for n in xrange(con_len):
+    for n in range(con_len):
         
         base_dict = {}
         num_bases = 0
@@ -588,21 +588,21 @@ if(__name__ == '__main__'):
     variantBases = SearchVariance(aligns)
     recnum = len(variantBases)
     if(recnum > 0):
-        print ("variantsite is %s" %variantBases[0])
-        print ("variantlength is %s" %(len(variantBases[0])))
+        print(("variantsite is %s" %variantBases[0]))
+        print(("variantlength is %s" %(len(variantBases[0]))))
         scores = []
         for i in range(recnum-1):
             seq1 = variantBases[i]
             seq2 = variantBases[i+1]
             score = alignscore(seq1, seq2)
             scores.append(score)
-            print ("seq1 %s - seq2 %s: %s" %(i, i+1, score))
+            print(("seq1 %s - seq2 %s: %s" %(i, i+1, score)))
         isunique, scoreinfo = minScore(scores, 0.2)
         if(not isunique):
             print ("Not hetero!")
         else:
             t_statistic, p_value = ttest_1samp(scoreinfo['scores'], scoreinfo['minscore'])
-            print("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value))
+            print(("minscore: %s\tminindex: %s\tpvalue: %s" %(scoreinfo['minscore'],scoreinfo['minindex'],p_value)))
             if(p_value < 0.001):
                 print ("Is hetero!")
                 seqgroupA, seqgroupB = getSeqGroups(aligns, scoreinfo['minindex'])

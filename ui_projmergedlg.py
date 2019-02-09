@@ -2,92 +2,83 @@
 
 # Form implementation generated from reading ui file 'projmergedlg.ui'
 #
-# Created: Fri Apr 11 10:58:03 2014
-#      by: PyQt4 UI code generator 4.10.4
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_ProjMergeDlg(object):
     def setupUi(self, ProjMergeDlg):
-        ProjMergeDlg.setObjectName(_fromUtf8("ProjMergeDlg"))
+        ProjMergeDlg.setObjectName("ProjMergeDlg")
         ProjMergeDlg.resize(424, 285)
-        self.groupBox = QtGui.QGroupBox(ProjMergeDlg)
+        self.groupBox = QtWidgets.QGroupBox(ProjMergeDlg)
         self.groupBox.setGeometry(QtCore.QRect(13, 95, 398, 141))
-        self.groupBox.setTitle(_fromUtf8(""))
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.gridLayout = QtGui.QGridLayout(self.groupBox)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.addButton = QtGui.QPushButton(self.groupBox)
-        self.addButton.setObjectName(_fromUtf8("addButton"))
+        self.groupBox.setTitle("")
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout = QtWidgets.QGridLayout(self.groupBox)
+        self.gridLayout.setObjectName("gridLayout")
+        self.addButton = QtWidgets.QPushButton(self.groupBox)
+        self.addButton.setObjectName("addButton")
         self.gridLayout.addWidget(self.addButton, 0, 1, 1, 1)
-        self.removeButton = QtGui.QPushButton(self.groupBox)
-        self.removeButton.setObjectName(_fromUtf8("removeButton"))
+        self.removeButton = QtWidgets.QPushButton(self.groupBox)
+        self.removeButton.setObjectName("removeButton")
         self.gridLayout.addWidget(self.removeButton, 1, 1, 1, 1)
-        self.projsListWidget = QtGui.QListWidget(self.groupBox)
-        self.projsListWidget.setObjectName(_fromUtf8("projsListWidget"))
+        self.projsListWidget = QtWidgets.QListWidget(self.groupBox)
+        self.projsListWidget.setObjectName("projsListWidget")
         self.gridLayout.addWidget(self.projsListWidget, 0, 0, 3, 1)
-        self.layoutWidget = QtGui.QWidget(ProjMergeDlg)
+        self.layoutWidget = QtWidgets.QWidget(ProjMergeDlg)
         self.layoutWidget.setGeometry(QtCore.QRect(13, 46, 323, 33))
-        self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.layoutWidget)
-        self.horizontalLayout.setMargin(0)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.label = QtGui.QLabel(self.layoutWidget)
-        self.label.setObjectName(_fromUtf8("label"))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label = QtWidgets.QLabel(self.layoutWidget)
+        self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        self.outfolderEdit = QtGui.QLineEdit(self.layoutWidget)
-        self.outfolderEdit.setObjectName(_fromUtf8("outfolderEdit"))
+        self.outfolderEdit = QtWidgets.QLineEdit(self.layoutWidget)
+        self.outfolderEdit.setObjectName("outfolderEdit")
         self.horizontalLayout.addWidget(self.outfolderEdit)
-        self.selectButton = QtGui.QPushButton(self.layoutWidget)
-        self.selectButton.setObjectName(_fromUtf8("selectButton"))
+        self.selectButton = QtWidgets.QPushButton(self.layoutWidget)
+        self.selectButton.setObjectName("selectButton")
         self.horizontalLayout.addWidget(self.selectButton)
-        self.widget = QtGui.QWidget(ProjMergeDlg)
+        self.widget = QtWidgets.QWidget(ProjMergeDlg)
         self.widget.setGeometry(QtCore.QRect(13, 13, 240, 23))
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.widget)
-        self.horizontalLayout_2.setMargin(0)
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.label_2 = QtGui.QLabel(self.widget)
-        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.widget.setObjectName("widget")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_2 = QtWidgets.QLabel(self.widget)
+        self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
-        self.projnameEdit = QtGui.QLineEdit(self.widget)
-        self.projnameEdit.setObjectName(_fromUtf8("projnameEdit"))
+        self.projnameEdit = QtWidgets.QLineEdit(self.widget)
+        self.projnameEdit.setObjectName("projnameEdit")
         self.horizontalLayout_2.addWidget(self.projnameEdit)
-        self.widget1 = QtGui.QWidget(ProjMergeDlg)
+        self.widget1 = QtWidgets.QWidget(ProjMergeDlg)
         self.widget1.setGeometry(QtCore.QRect(200, 242, 213, 32))
-        self.widget1.setObjectName(_fromUtf8("widget1"))
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.widget1)
-        self.horizontalLayout_3.setMargin(0)
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.widget1.setObjectName("widget1")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget1)
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
-        self.cancelButton = QtGui.QPushButton(self.widget1)
-        self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
+        self.cancelButton = QtWidgets.QPushButton(self.widget1)
+        self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout_3.addWidget(self.cancelButton)
-        self.okayButton = QtGui.QPushButton(self.widget1)
-        self.okayButton.setObjectName(_fromUtf8("okayButton"))
+        self.okayButton = QtWidgets.QPushButton(self.widget1)
+        self.okayButton.setObjectName("okayButton")
         self.horizontalLayout_3.addWidget(self.okayButton)
+        self.layoutWidget.raise_()
+        self.groupBox.raise_()
+        self.label_2.raise_()
+        self.projnameEdit.raise_()
+        self.okayButton.raise_()
+        self.cancelButton.raise_()
         self.label.setBuddy(self.outfolderEdit)
         self.label_2.setBuddy(self.projnameEdit)
 
         self.retranslateUi(ProjMergeDlg)
-        QtCore.QObject.connect(self.cancelButton, QtCore.SIGNAL(_fromUtf8("clicked()")), ProjMergeDlg.reject)
+        self.cancelButton.clicked.connect(ProjMergeDlg.reject)
         QtCore.QMetaObject.connectSlotsByName(ProjMergeDlg)
         ProjMergeDlg.setTabOrder(self.projnameEdit, self.outfolderEdit)
         ProjMergeDlg.setTabOrder(self.outfolderEdit, self.selectButton)
@@ -98,12 +89,23 @@ class Ui_ProjMergeDlg(object):
         ProjMergeDlg.setTabOrder(self.cancelButton, self.projsListWidget)
 
     def retranslateUi(self, ProjMergeDlg):
-        ProjMergeDlg.setWindowTitle(_translate("ProjMergeDlg", "Dialog", None))
-        self.addButton.setText(_translate("ProjMergeDlg", "Add Project", None))
-        self.removeButton.setText(_translate("ProjMergeDlg", "Remove", None))
-        self.label.setText(_translate("ProjMergeDlg", "Project Folder:", None))
-        self.selectButton.setText(_translate("ProjMergeDlg", "Select", None))
-        self.label_2.setText(_translate("ProjMergeDlg", "Project Name:", None))
-        self.cancelButton.setText(_translate("ProjMergeDlg", "Cancel", None))
-        self.okayButton.setText(_translate("ProjMergeDlg", "OK", None))
+        _translate = QtCore.QCoreApplication.translate
+        ProjMergeDlg.setWindowTitle(_translate("ProjMergeDlg", "Dialog"))
+        self.addButton.setText(_translate("ProjMergeDlg", "Add Project"))
+        self.removeButton.setText(_translate("ProjMergeDlg", "Remove"))
+        self.label.setText(_translate("ProjMergeDlg", "Project Folder:"))
+        self.selectButton.setText(_translate("ProjMergeDlg", "Select"))
+        self.label_2.setText(_translate("ProjMergeDlg", "Project Name:"))
+        self.cancelButton.setText(_translate("ProjMergeDlg", "Cancel"))
+        self.okayButton.setText(_translate("ProjMergeDlg", "OK"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    ProjMergeDlg = QtWidgets.QDialog()
+    ui = Ui_ProjMergeDlg()
+    ui.setupUi(ProjMergeDlg)
+    ProjMergeDlg.show()
+    sys.exit(app.exec_())
 

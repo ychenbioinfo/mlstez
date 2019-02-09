@@ -2,6 +2,7 @@ import csv
 import SeqAlignParallel
 import ConsensusSeqs
 import HetSearchParallel
+import sys
 
 from Bio import SeqIO
 
@@ -486,4 +487,4 @@ class ProjectEnviroment(object):
         if(self.msgHandle is not None):
             self.msgHandle.emit(msg, end)
         else:
-            stderr.write(unicode(msg + end))
+            sys.stderr.write(str(msg + end))

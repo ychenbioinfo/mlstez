@@ -1,6 +1,6 @@
 #!/usr/bin/env
 
-import ConfigParser
+import configparser
 class Parameters(object):
   
     def __init__(self):
@@ -44,7 +44,7 @@ class Parameters(object):
         return True
 
     def savefile(self,fn):
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.add_section('PROJECT')
         config.set('PROJECT','Project_Name', self.ProjectName)
         config.add_section('FILES')
@@ -77,7 +77,7 @@ class Parameters(object):
             return (False, e)
             
     def openfile(self,fn):
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         try:
             config.read(fn)
             #---python3 

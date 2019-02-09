@@ -87,7 +87,7 @@ class ConsensusSeqs(object):
         gapchar = '-'
         #consuscut = self.parameters.ConsensusCut
         
-        for n in xrange(con_len):
+        for n in range(con_len):
             
             base_dict = {}
             num_bases = 0

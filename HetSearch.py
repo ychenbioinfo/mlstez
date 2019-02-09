@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import division
+
 import tempfile
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO

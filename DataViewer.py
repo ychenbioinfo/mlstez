@@ -1,5 +1,7 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.stats import gaussian_kde
 from numpy import arange
@@ -59,9 +61,9 @@ class ImageViewer(QWidget):
         ax = self.figure.add_subplot(111)
         
         colnum = len(data)
-        pos = range(colnum)
+        pos = list(range(colnum))
         w = min(0.15*max(colnum,1.0),0.5)
-        for i in xrange(colnum):
+        for i in range(colnum):
             k = gaussian_kde(data[i])
             m = k.dataset.min()
             M = k.dataset.max()
@@ -159,7 +161,7 @@ class ConsensusViewer(QWidget):
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
         self.viewer.setHorizontalHeaderItem(0, QTableWidgetItem("Strain"))
-        for i in xrange(1,colnum):
+        for i in range(1,colnum):
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(self.geneIds[i-1]))
             
         rowcount = 0
@@ -203,9 +205,9 @@ class ConsensusViewer(QWidget):
                 header = self.geneIds
                 header.insert(0,'Strain')
                 csv_writer.writerow(header)
-                for i in xrange(self.viewer.rowCount()):
+                for i in range(self.viewer.rowCount()):
                     content = []
-                    for j in xrange(self.viewer.columnCount()):
+                    for j in range(self.viewer.columnCount()):
                         content.append(self.viewer.item(i,j).text())
                     csv_writer.writerow(content)
                 
@@ -285,10 +287,10 @@ class HetViewer(QWidget):
         self.viewer.setRowCount(rownum)
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
-        for i in xrange(colnum):
+        for i in range(colnum):
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(header[i]))
-        for i in xrange(rownum):
-            for j in xrange(colnum):
+        for i in range(rownum):
+            for j in range(colnum):
                 datainfo = str(data[i+1][j])
                 if(j == 0):
                     self.rowname.append(datainfo)
@@ -328,7 +330,7 @@ class HetViewer(QWidget):
             try:
                 fh_outfile = open(filename,'w')
                 csv_writer = csv.writer(fh_outfile, dialect='excel')
-                for i in xrange(len(self.data)):
+                for i in range(len(self.data)):
                     csv_writer.writerow(self.data[i])
                 fh_outfile.close()
                 QMessageBox.information(self, "Data Exported", "Data exported!")
@@ -367,12 +369,12 @@ class TableViewer(QWidget):
         self.viewer.setRowCount(rownum)
         self.viewer.setColumnCount(colnum)
         self.viewer.setShowGrid(True)
-        for i in xrange(colnum):
+        for i in range(colnum):
             if(header[i] == "unmapped"):
                 header[i] = "UnMap"
             self.viewer.setHorizontalHeaderItem(i, QTableWidgetItem(header[i]))
-        for i in xrange(rownum):
-            for j in xrange(colnum):
+        for i in range(rownum):
+            for j in range(colnum):
                 datainfo = str(data[i+1][j])
                 if(j == 0):
                     self.rowname.append(datainfo)
@@ -398,7 +400,7 @@ class TableViewer(QWidget):
             try:
                 fh_outfile = open(filename,'w')
                 csv_writer = csv.writer(fh_outfile, dialect='excel')
-                for i in xrange(len(self.data)):
+                for i in range(len(self.data)):
                     csv_writer.writerow(self.data[i])
                 fh_outfile.close()
                 QMessageBox.information(self, "Data Exported", "Data exported!")
