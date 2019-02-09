@@ -109,73 +109,92 @@ class SeqAlignments(object):
         self.symbarcode = projenv.SymBarcode
 
     def Run(self):
-        self.msgHandle.showMsg("Searching for barcodes in reads...")
-        groupnum = int(len(self.seqs)/self.threadNum)
-        for i in range(self.threadNum):
-            startnum = groupnum * i
-            endnum = groupnum * (i+1)
-            if(i == self.threadNum - 1):
-                endnum = len(self.seqs)
-            self.seqgroups.append(self.seqs[startnum:endnum])
+        stats = list()
+        alignedseqs = list()
+        unbarcode = list()
+        unprimer = list()
+        primeredseqs = list()
 
-        manager = Manager()
-        alignedseqs = manager.list()
-        primeredseqs = manager.list()
-        stats = manager.list()
-        unbarcode = manager.list()
-        unprimer = manager.list()
-    
-        for i in range(self.threadNum):
-            self.msgHandle.showMsg("Open thread +1")
-            child = Process(target=BarcodeSearch,
-                            args=(self.paras, self.seqgroups[i],
-                                  self.barcodes, self.symbarcode, stats, alignedseqs, unbarcode))
-            self.msgHandle.showMsg("Searching for barcodes in reads...")
-            child.start()
-            self.workers.append(child)
-        
-        totalcount = 0
-        while any(i.is_alive() for i in self.workers):
-            sleep(0.1)
-            while len(stats) > 0:
-                totalcount += 100
-                if(totalcount % 1000 == 0):
-                    self.msgHandle.showMsg("%s reads have been processed..."
-                                           %(totalcount))
-                stats.pop()
-        self.msgHandle.showMsg('Done!')
-    
-        for self.worker in self.workers:
-            self.worker.join()
-        
-        self.workers = []
+        self.msgHandle.showMsg("Searching for barcodes in reads...")
+        BarcodeSearch(self.paras, self.seqs, self.barcodes, self.symbarcode, stats, alignedseqs,
+                      unbarcode)
+
         self.msgHandle.showMsg("Searching for primers in reads...")
-    
-        for i in range(self.threadNum):
-            child = Process(target=PrimerSearch,
-                            args=(self.paras, alignedseqs[i],
-                                  self.primers, stats, unprimer,primeredseqs))
-            child.start()
-            self.workers.append(child)
-        
-        totalcount = 0
-        
-        while any(i.is_alive() for i in self.workers):
-            sleep(0.1)
-            while len(stats) > 0:
-                totalcount += 100
-                if(totalcount % 1000 == 0):
-                    self.msgHandle.showMsg("%s reads have been processed..."
-                                           %(totalcount))
-                stats.pop()
-        
-        for self.worker in self.workers:
-            self.worker.join()
-        
-        self.alignedseqs = [aligned for aligns in primeredseqs for aligned in aligns]
+        PrimerSearch(self.paras, alignedseqs, self.primers, stats, unprimer, primeredseqs)
+
+        self.alignedseqs = alignedseqs
         self.num_unbarcode = sum(unbarcode)
         self.num_unprimer = sum(unprimer)
         self.msgHandle.showMsg('Done!')
+
+    # def Run(self):
+    #     self.msgHandle.showMsg("Searching for barcodes in reads...")
+    #     groupnum = int(len(self.seqs)/self.threadNum)
+    #     for i in range(self.threadNum):
+    #         startnum = groupnum * i
+    #         endnum = groupnum * (i+1)
+    #         if(i == self.threadNum - 1):
+    #             endnum = len(self.seqs)
+    #         self.seqgroups.append(self.seqs[startnum:endnum])
+    #
+    #     manager = Manager()
+    #     alignedseqs = manager.list()
+    #     primeredseqs = manager.list()
+    #     stats = manager.list()
+    #     unbarcode = manager.list()
+    #     unprimer = manager.list()
+    #
+    #     for i in range(self.threadNum):
+    #         self.msgHandle.showMsg("Open thread +1")
+    #         child = Process(target=BarcodeSearch,
+    #                         args=(self.paras, self.seqgroups[i],
+    #                               self.barcodes, self.symbarcode, stats, alignedseqs, unbarcode))
+    #         self.msgHandle.showMsg("Searching for barcodes in reads...")
+    #         child.start()
+    #         self.workers.append(child)
+    #
+    #     totalcount = 0
+    #     while any(i.is_alive() for i in self.workers):
+    #         sleep(0.1)
+    #         while len(stats) > 0:
+    #             totalcount += 100
+    #             if(totalcount % 1000 == 0):
+    #                 self.msgHandle.showMsg("%s reads have been processed..."
+    #                                        %(totalcount))
+    #             stats.pop()
+    #     self.msgHandle.showMsg('Done!')
+    #
+    #     for self.worker in self.workers:
+    #         self.worker.join()
+    #
+    #     self.workers = []
+    #     self.msgHandle.showMsg("Searching for primers in reads...")
+    #
+    #     for i in range(self.threadNum):
+    #         child = Process(target=PrimerSearch,
+    #                         args=(self.paras, alignedseqs[i],
+    #                               self.primers, stats, unprimer,primeredseqs))
+    #         child.start()
+    #         self.workers.append(child)
+    #
+    #     totalcount = 0
+    #
+    #     while any(i.is_alive() for i in self.workers):
+    #         sleep(0.1)
+    #         while len(stats) > 0:
+    #             totalcount += 100
+    #             if(totalcount % 1000 == 0):
+    #                 self.msgHandle.showMsg("%s reads have been processed..."
+    #                                        %(totalcount))
+    #             stats.pop()
+    #
+    #     for self.worker in self.workers:
+    #         self.worker.join()
+    #
+    #     self.alignedseqs = [aligned for aligns in primeredseqs for aligned in aligns]
+    #     self.num_unbarcode = sum(unbarcode)
+    #     self.num_unprimer = sum(unprimer)
+    #     self.msgHandle.showMsg('Done!')
     
     def Stop(self):
         for worker in self.workers:
@@ -197,6 +216,7 @@ def BarcodeSearch(paras, seqs, barcodes, symbarcode, stats, result, unbarcode):
     reglen = 2*paras.FlankingLength + paras.BarcodeLen
     
     for seq in seqs:
+        print(seq)
         seqcount += 1
         if(seqcount % 100 == 0):
             stats.append(1)

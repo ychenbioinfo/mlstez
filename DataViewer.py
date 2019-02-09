@@ -5,13 +5,10 @@ from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.stats import gaussian_kde
 from numpy import arange
-import matplotlib.mlab as mlab
-#import numpy as np
-#import scipy.stats as stats
 import matplotlib.pyplot as plt
-import random
 import sys
 import SeqViewDlg
+
 
 class ImageViewer(QWidget):
     def __init__(self, outfolder="", parent = None):

@@ -1,13 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QFileDialog, QDialog, QListWidgetItem, QMessageBox, QApplication
 import ui_parameterdlg
 import Parameters
 import sys
 from os.path import isfile
 from os.path import isdir
 from os.path import dirname
-from io import open
+
 
 class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     def __init__(self, parameters, parent=None):
@@ -15,22 +14,19 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
         self.parameters = parameters
         self.setupUi(self)
         self.workingpath = dirname(__file__)
-        #fileItem = QStandardItem()
-        #fileItem.setText("aaaa")
-        #self.seqFileListView.addItem(fileItem)
         self.initUi()
 
     def initUi(self):
         """load parameters into ui"""
-        #--define window size based on parameters we have--
-        if(not isinstance(self.parameters.MuscleCMD, str)):
+        # define window size based on parameters we have
+        if not isinstance(self.parameters.MuscleCMD, str):
             self.parameters.MuscleCMD = ""
-        if(not isinstance(self.parameters.PadSeq, str)):
+        if not isinstance(self.parameters.PadSeq, str):
             self.parameters.PadSeq = ""
-        if(not isinstance(self.parameters.UniPrimer, str)):
+        if not isinstance(self.parameters.UniPrimer, str):
             self.parameters.UniPrimer = ""
             
-        if(self.parameters.isEssential()):
+        if self.parameters.isEssential():
             self.moreButton.setChecked(False)
             self.setFixedSize(560,240)
         else:
@@ -39,19 +35,19 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
 
         self.removeseqfileButton.setEnabled(False)
         
-        ##-init all values based on parameter information--
+        # init all values based on parameter information
         self.projnameLineEdit.setText(self.parameters.ProjectName)
-        if(len(self.parameters.Seq_Files) > 0):
+        if len(self.parameters.Seq_Files) > 0:
             for filen in self.parameters.Seq_Files:
                 self.__addSeqFiles(filen)
         self.barcodefileLineEdit.setText(self.parameters.Barcode_File)
         self.primerfileLineEdit.setText(self.parameters.Primer_File)
         self.outfolderLineEdit.setText(self.parameters.Out_Folder)
-        if(self.parameters.Filetype == "FASTQ"):
+        if self.parameters.Filetype == "FASTQ":
             self.fastqRadioBtn.setChecked(True)
         else:
             self.fastaRadioBtn.setChecked(True)
-        if(self.parameters.ScoringSys == "phred33"):
+        if self.parameters.ScoringSys == "phred33":
             self.phred33RadioBtn.setChecked(True)
         else:
             self.phred64RadioBtn.setChecked(True)
@@ -69,21 +65,20 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
         self.maxmismatchSpinBox.setValue(self.parameters.MaxMisMatch)
         self.threadSpinBox.setValue(self.parameters.Threads)
         #self.consensuscutDoubleSpinBox.setValue(self.parameters.ConsensusCut)
-        if(isdir(self.parameters.Out_Folder)):
+        if isdir(self.parameters.Out_Folder):
             self.workingpath = self.parameters.Out_Folder
     
     @pyqtSlot()
     def on_moreButton_clicked(self):
-        if(self.moreButton.isChecked()):
+        if self.moreButton.isChecked():
             self.setFixedSize(560,455)
         else:
             self.setFixedSize(560,240)
     
     @pyqtSlot()
     def on_addseqfileButton_clicked(self):
-        filename, _ = QFileDialog.getOpenFileName(self, 'Add file',
-                self.workingpath)
-        if(filename):
+        filename, _ = QFileDialog.getOpenFileName(parent=self, caption='Add file', directory=self.workingpath)
+        if filename:
             self.__addSeqFiles(filename)
             self.workingpath = dirname(filename)
     
@@ -91,7 +86,7 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     def on_barcodefileButton_clicked(self):
         filename, _ = QFileDialog.getOpenFileName(self, 'Barcode file',
                 self.workingpath)
-        if(filename):
+        if filename:
             self.barcodefileLineEdit.setText(filename)
             self.workingpath = dirname(filename)
     
@@ -99,7 +94,7 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     def on_primerfileButton_clicked(self):
         filename, _ = QFileDialog.getOpenFileName(self, 'Primer file',
                 self.workingpath)
-        if(filename):
+        if filename:
             self.primerfileLineEdit.setText(filename)
             self.workingpath = dirname(filename)
     
@@ -107,74 +102,74 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     def on_outfolderButton_clicked(self):
         foldername = QFileDialog.getExistingDirectory(self, 'Output Folder',
                 self.workingpath)
-        if(foldername):
+        if foldername:
             self.outfolderLineEdit.setText(foldername)
             
     @pyqtSlot()
     def on_muscleButton_clicked(self):
         filename, _ = QFileDialog.getOpenFileName(self, 'MUSCLE',
                 self.workingpath)
-        if(filename):
+        if filename:
             self.muscleLineEdit.setText(filename)
             self.workingpath = dirname(filename)
     
     @pyqtSlot()
     def on_removeseqfileButton_clicked(self):
         self.seqfileListWidget.takeItem(self.seqfileListWidget.currentRow())
-        if(self.seqfileListWidget.currentItem() is None):
+        if self.seqfileListWidget.currentItem() is None:
             self.removeseqfileButton.setEnabled(False)
     
     @pyqtSlot()
     def on_okayButton_clicked(self):
-        if(not self.__checkEditLine(self.projnameLineEdit, "project name")):
+        if not self.__checkEditLine(self.projnameLineEdit, "project name"):
             return
-        if(self.seqfileListWidget.count() < 1):
+        if self.seqfileListWidget.count() < 1:
             self.__sendMessage("Sequencing file")
             self.addseqfileButton.setFocus()
             return
-        if(not self.__checkEditLine(self.barcodefileLineEdit, "barcode file")):
+        if not self.__checkEditLine(self.barcodefileLineEdit, "barcode file"):
             return
-        if(not self.__checkEditLine(self.primerfileLineEdit, "primer file")):
+        if not self.__checkEditLine(self.primerfileLineEdit, "primer file"):
             return
-        if(not self.__checkEditLine(self.outfolderLineEdit, "output folder")):
+        if not self.__checkEditLine(self.outfolderLineEdit, "output folder"):
             return
-        if(not self.__checkEditLine(self.muscleLineEdit, "MUSCLE command")):
+        if not self.__checkEditLine(self.muscleLineEdit, "MUSCLE command"):
             return
-        if(not self.__checkEditLine(self.paddingEditLine, "padding sequence")):
+        if not self.__checkEditLine(self.paddingEditLine, "padding sequence"):
             return
-        if(not self.__checkEditLine(self.uniprimerLineEdit, "unviersal primer")):
+        if not self.__checkEditLine(self.uniprimerLineEdit, "unviersal primer"):
             return
         
         self.parameters.Seq_Files, isOkay = self.__getSeqFiles()
-        if(not isOkay):
+        if not isOkay:
             return
         
-        if(isdir((self.outfolderLineEdit.text()))):
+        if isdir((self.outfolderLineEdit.text())):
             self.parameters.Out_Folder = self.outfolderLineEdit.text()
         else:
             return
         
-        if(self.__checkFileExist(self.primerfileLineEdit.text())):
+        if self.__checkFileExist(self.primerfileLineEdit.text()):
             self.parameters.Primer_File = self.primerfileLineEdit.text()
         else:
             return
         
-        if(self.__checkFileExist(self.barcodefileLineEdit.text())):
+        if self.__checkFileExist(self.barcodefileLineEdit.text()):
             self.parameters.Barcode_File = self.barcodefileLineEdit.text()
         else:
             return
         
-        if(self.__checkFileExist(self.muscleLineEdit.text())):
+        if self.__checkFileExist(self.muscleLineEdit.text()):
             self.parameters.MuscleCMD = self.muscleLineEdit.text()
         else:
             return
         
         self.parameters.ProjectName = self.projnameLineEdit.text()
-        if(self.fastqRadioBtn.isChecked()):
+        if self.fastqRadioBtn.isChecked():
             self.parameters.Filetype = "FASTQ"
         else:
             self.parameters.Filetype = "FASTA"
-        if(self.phred33RadioBtn.isChecked()):
+        if self.phred33RadioBtn.isChecked():
             self.parameters.ScoringSys = "phred33"
         else:
             self.parameters.ScoringSys = "phred64"
@@ -200,7 +195,6 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
     def on_seqfileListWidget_itemClicked(self):
         self.removeseqfileButton.setEnabled(True)
 
-
     def __addSeqFiles(self,filename):
         fileItem = QListWidgetItem()
         fileItem.setText(filename)
@@ -211,7 +205,7 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
                                     ("%s is empty" %(msg)), QMessageBox.Ok|QMessageBox.Default)
         
     def __checkEditLine(self,edtline,msg):
-        if(edtline.text() == ""):
+        if edtline.text() == "":
             self.__sendMessage(msg)
             edtline.setFocus()
             return False
@@ -224,20 +218,21 @@ class ParameterDlg(QDialog, ui_parameterdlg.Ui_ParameterDlg):
         for count in range(filecount):
             item = self.seqfileListWidget.item(count)
             filename = item.text()
-            if(not self.__checkFileExist(filename)):
+            if not self.__checkFileExist(filename):
                 return (None, False)
             filenames.append(filename)
-        return (filenames, True)
+        return filenames, True
     
     def __checkFileExist(self, fn):
-        if(isfile(fn)):
+        if isfile(fn):
             return True
         else:
             QMessageBox.warning(self, "Error",
                                 ("Cannot find file: %s" %fn))
             return False
 
-if(__name__ == "__main__"):
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     paras = Parameters.Parameters()
     #paras.Seq_Files = ["/home/aa.fastq","/home/bb.fastq"]
