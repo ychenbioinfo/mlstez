@@ -192,9 +192,10 @@ class MainWindow(QMainWindow):
         #              "<font color='orange'>MLSTEZ</font></font></I></B><p><Next-generation MLST solution></p></div>"
         welcomeInfo = """<p><div align='center'><em><strong><span style="font-size:20px;">MLST<span style="color:#ffa500;">EZ</span></span></strong></em></div></p>
 <p><div align='center'>The next-generation MLST analyser</div></p>
-<p><div align='center'><I>(ver. 0.2.0)</I></div></p>
-<p><div align='center'>Created by: Yuan Chen</div></p>
-<p><div align='center'>Duke University Medical Center</div></p>"""
+<p><div align='center'><I>(ver. 0.3.0)</I></div></p>
+<p><div align='center'>Created by: Yuan (Alvin) Chen</div></p>
+<p><div align='center'>Duke University Medical Center</div></p>
+"""
         infoview.addtext(welcomeInfo)
         self.__addViewer(infoview, "MainInfo", True)
 
@@ -341,14 +342,8 @@ class MainWindow(QMainWindow):
             self.projenv = ProjectEnviroment.ProjectEnviroment(self.parameters, self.runinfo)
             try:
                 fh = gzip.open(projfile, "rb")
-                buffer = ""
-                BLOCK_SIZE = 2 ** 20
-                while True:
-                    data = fh.read(BLOCK_SIZE)
-                    if data == "":
-                        break
-                    buffer += data
-                projinfo = pickle.loads(buffer)
+                projinfo = pickle.loads(fh.read())
+                fh.close()
                 self.projenv.parameters = projinfo['parameters']
                 self.projenv.Seqs = projinfo['Seqs']
                 self.projenv.Primers = projinfo['Primers']
@@ -371,7 +366,7 @@ class MainWindow(QMainWindow):
                 self.parameterfile = self.projenv.parameters.Out_Folder + "/config.ini"
                 self.__showParameter()
                 self.__showSummary()
-                self.__showSeqLength()
+                # self.__showSeqLength()
                 self.__showAligned()
                 self.__btnconfigStat()
                 if (self.curRuncode & 1 << 1):
@@ -416,7 +411,7 @@ class MainWindow(QMainWindow):
             self.projenv.strainStats()
             self.treeRoot.setText(0, ("Project - %s" % (self.parameters.ProjectName)))
             self.__showSummary()
-            self.__showSeqLength()
+            # self.__showSeqLength()
             self.__showAligned()
             self.curRuncode = int('0001', 2)
             self.saveStats()
@@ -522,17 +517,17 @@ class MainWindow(QMainWindow):
             self.showMsg(msg, end)
 
     def jobstats(self, statcode, msg):
-        if (statcode == 1):
-            if (msg == "Loaded"):
+        if statcode == 1:
+            if msg == "Loaded":
                 self.__showSummary()
-                self.__showSeqLength()
-            if (msg == "Aligned"):
+                # self.__showSeqLength()
+            if msg == "Aligned":
                 self.__showAligned()
-            if (msg == "Consed"):
+            if msg == "Consed":
                 self.__showConsus()
-            if (msg == "Heted"):
+            if msg == "Heted":
                 self.__showHet()
-            if (msg == "Done"):
+            if msg == "Done":
                 self.__btnconfigStat()
                 QMessageBox.information(self, "Job finished", "All jobs have finished!")
         # print data
@@ -573,12 +568,13 @@ class MainWindow(QMainWindow):
         self.__addViewer(self.infoview, "Summary")
 
     def __showSeqLength(self):
-        seqlengths = self.projenv.seqlengths()
-        newTreeItem = self.createTreeitem("Read length dist", "chart")
-        self.treeRoot.addChild(newTreeItem)
-        infoview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
-        infoview.plotDensity(seqlengths)
-        self.__addViewer(infoview, "Read length dist")
+        pass
+        # seqlengths = self.projenv.seqlengths()
+        # newTreeItem = self.createTreeitem("Read length dist", "chart")
+        # self.treeRoot.addChild(newTreeItem)
+        # infoview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
+        # infoview.plotDensity(seqlengths)
+        # self.__addViewer(infoview, "Read length dist")
 
     def __showAligned(self):
         # ---viewer for align ratio
@@ -588,18 +584,19 @@ class MainWindow(QMainWindow):
         unprimer = self.projenv.num_unprimer
         bothaligned = barcodealigned - unprimer
         alignfracs = [bothaligned, unprimer, unaligned]
-        newTreeItem = self.createTreeitem("Alignment ratio", "chart")
-        self.treeRoot.addChild(newTreeItem)
-        ratioview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
-        ratioview.plotAlignRatio(alignfracs)
-        self.__addViewer(ratioview, "Alignment ratio")
+
+        # newTreeItem = self.createTreeitem("Alignment ratio", "chart")
+        # self.treeRoot.addChild(newTreeItem)
+        # ratioview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
+        # ratioview.plotAlignRatio(alignfracs)
+        # self.__addViewer(ratioview, "Alignment ratio")
 
         # ---viewer for length distribution
-        newTreeItem = self.createTreeitem("Length ranges", "chart")
-        self.treeRoot.addChild(newTreeItem)
-        lengthview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
-        lengthview.plotLengthRange(self.projenv.locusLengthsInfo)
-        self.__addViewer(lengthview, "Length ranges")
+        # newTreeItem = self.createTreeitem("Length ranges", "chart")
+        # self.treeRoot.addChild(newTreeItem)
+        # lengthview = DataViewer.ImageViewer(self.projenv.parameters.Out_Folder)
+        # lengthview.plotLengthRange(self.projenv.locusLengthsInfo)
+        # self.__addViewer(lengthview, "Length ranges")
 
         # ---viewer for data table----
         newTreeItem = self.createTreeitem("Reads stats", "table")
@@ -617,13 +614,14 @@ class MainWindow(QMainWindow):
         self.infoview.addtext(infotext)
 
     def __showConsus(self):
-        newTreeItem = self.createTreeitem("Consensus", "table")
-        self.treeRoot.addChild(newTreeItem)
-        consview = DataViewer.ConsensusViewer(self.projenv.consSeqs, self.projenv.Primers,
-                                              self.projenv.Barcodes,
-                                              self.projenv.parameters.Out_Folder)
-        consview.showData()
-        self.__addViewer(consview, "Consensus")
+        pass
+        # newTreeItem = self.createTreeitem("Consensus", "table")
+        # self.treeRoot.addChild(newTreeItem)
+        # consview = DataViewer.ConsensusViewer(self.projenv.consSeqs, self.projenv.Primers,
+        #                                       self.projenv.Barcodes,
+        #                                       self.projenv.parameters.Out_Folder)
+        # consview.showData()
+        # self.__addViewer(consview, "Consensus")
 
     def __showHet(self):
         newTreeItem = self.createTreeitem("Heterozygous loci", "table")
@@ -636,13 +634,13 @@ class MainWindow(QMainWindow):
     ##msg port project enviroment
     def showMsg(self, message, end='\n'):
         cursor = self.cmdTextBrowser
-        if (self.__msgStatus == 1):
+        if self.__msgStatus == 1:
             self.cmdTextBrowser.append(message)
         else:
             self.cmdTextBrowser.moveCursor(QTextCursor.End)
             self.cmdTextBrowser.insertPlainText(message)
             self.cmdTextBrowser.moveCursor(QTextCursor.End)
-        if (end == '\n'):
+        if end == '\n':
             self.cmdTextBrowser.append("")
             self.__msgStatus = 1
         else:
@@ -667,23 +665,24 @@ class ProjectThread(QThread):
         module2 = [self.projenv.DumpUnmappedReads]
         module3 = [self.__proj_searchHet]
         runmodule = [module0, module1, module2, module3]
+
         for i in range(4):
             mask = 1 << i
-            if (mask & self.jobcode):
+            if mask & self.jobcode:
                 for job in runmodule[i]:
                     isokay, error = job()
-                    if (not isokay):
+                    if not isokay:
                         # print ("Error: %s" %error)
                         QMessageBox.warning(self.mainframe, "Error", ("Error: %s" % error),
                                             QMessageBox.Ok | QMessageBox.Default)
                         return
                 self.mainframe.curRuncode = self.mainframe.curRuncode + (1 << i)
         self.mainframe.saveStats()
-
+        print("Done")
         self.jobstats.emit(1, "Done")
 
     def __proj_loadFiles(self):
-        if (not (self.projenv.status & 1)):
+        if not (self.projenv.status & 1):
             isokay, error = self.projenv.loadFiles()
             if (isokay):
                 self.jobstats.emit(1, "Loaded")
@@ -692,7 +691,7 @@ class ProjectThread(QThread):
                 return (False, error)
 
     def __proj_alignSeqs(self):
-        if (not (self.projenv.status & (1 << 2))):
+        if not (self.projenv.status & (1 << 2)):
             isokay, error = self.projenv.alignSeqs()
             if (isokay):
                 self.projenv.locusLengths()
@@ -704,13 +703,13 @@ class ProjectThread(QThread):
                 return (False, error)
 
     def __proj__genCons(self):
-        if (not (self.projenv.status & (1 << 4))):
+        if not (self.projenv.status & (1 << 4)):
             isokay, error = self.projenv.GenerateConsensus()
-            if (isokay):
+            if isokay:
                 self.jobstats.emit(1, "Consed")
-                return (True, None)
+                return True, None
             else:
-                return (False, error)
+                return False, error
 
     def __proj_searchHet(self):
         isokay, error = self.projenv.HetSearch()

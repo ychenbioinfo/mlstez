@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.stats import gaussian_kde
 from numpy import arange
 import matplotlib.pyplot as plt
@@ -440,6 +440,7 @@ class TableViewer(QWidget):
                 trimmedSeqs += trimmedseq.format('fasta')
         return (True, trimmedSeqs, untrimmedSeqs)
 
+
 class Form(QDialog):
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
@@ -450,6 +451,7 @@ class Form(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(self.viewer)
         self.setLayout(layout)
+
 
 if(__name__ == '__main__'):
     app = QApplication(sys.argv)

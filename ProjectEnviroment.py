@@ -269,7 +269,7 @@ class ProjectEnviroment(object):
             #whisker = 1.5*iqd
             whisker = 2*iqd
             s1 = q1 - whisker
-            s2 = q3 +  whisker
+            s2 = q3 + whisker
             lenRange = {'s1':s1,'s2':s2}
             locusRange[gene] = lenRange
             
@@ -370,30 +370,26 @@ class ProjectEnviroment(object):
         return (True, None)
     
     def GenerateConsensus(self):
-        #self.showMsg('Generating consensus sequences...', end="")
-        #if(self.msgHandle is not None):
-        #    self.msgHandle.showMsg('Generating consensus sequences...', end="")
         consseqs = ConsensusSeqs.ConsensusSeqs(self)
-        (isokay, errMsg) = consseqs.makeConsensus()
-        if(isokay):    
+        isokay, errMsg = consseqs.makeConsensus()
+        if isokay:
             self.consSeqs = consseqs.ConsSeqs
             try:
                 for gene in self.consSeqs:
                     outfile = self.parameters.Out_Folder + "/" + gene + ".cons.fasta"
-                    fh_out = open(outfile,'w')
+                    # print(outfile)
+                    fh_out = open(outfile, 'w')
                     seqs = self.consSeqs[gene]
                     for seq in seqs:
-                        fh_out.write(seq.format("fasta").decode('utf-8'))
+                        # print(seq)
+                        fh_out.write(seq.format("fasta"))
                     fh_out.close()
-                self.status = self.status + (1<<4)
-                #self.showMsg('done!')
-                #if(self.msgHandle is not None):
-                #    self.msgHandle.showMsg('done!')
-                return (True, None)
+                self.status = self.status + (1 << 4)
+                return True, None
             except Exception as errMsg:
-                return (False, errMsg)
+                return False, errMsg
         else:
-            return (False, errMsg)
+            return False, errMsg
     
     def DumpUnmappedReads(self):
         self.showMsg('Dumping unaligned reads to file...', end="")

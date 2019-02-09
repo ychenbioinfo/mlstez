@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+
 class ConsensusSeqs(object):
     def __init__(self, projenv):
         self.parameters = projenv.parameters
@@ -16,7 +18,7 @@ class ConsensusSeqs(object):
         from Bio.Seq import Seq
         from Bio.Alphabet import generic_dna
         import os
-        self.msgHandle.showMsg ('Generating consensus sequences...', "")
+        self.msgHandle.showMsg('Generating consensus sequences...', "")
         #stderr.write ('\nGenerating consensus sequences...')
         ConsSeqs = {}
         MUSCLE = self.parameters.MuscleCMD
@@ -24,27 +26,29 @@ class ConsensusSeqs(object):
             for strain in self.SortedSeqs:
                 strainSeqs = self.SortedSeqs[strain]
                 for gene in strainSeqs:
-                    if(gene == "unmapped"):
+                    if gene == "unmapped":
                         continue
                     geneSeqs = strainSeqs[gene]
                     lenRange = self.locusLengthRange[gene]
-                    sortedseqs = self._SortSeqs(geneSeqs,lenRange,self.parameters.MinReadNum,self.parameters.MaxReadNum)
-                    if(sortedseqs != ""):
+                    sortedseqs = self._SortSeqs(geneSeqs, lenRange, self.parameters.MinReadNum,
+                                                self.parameters.MaxReadNum)
+                    if sortedseqs != "":
                         tmpfile = tempfile.NamedTemporaryFile('w', delete=False)
                         tmpname = tmpfile.name
                         for seq in sortedseqs:
                             tmpfile.write(seq.format("fasta"))
                         tmpfile.flush()
                         tmpfile.close()
-                        cmdline = MuscleCommandline(MUSCLE,input=tmpname)
-                        STDOUT, STDERR  = cmdline()
+                        cmdline = MuscleCommandline(MUSCLE, input=tmpname)
+                        # print(cmdline)
+                        stdout, stderr = cmdline()
                         os.remove(tmpname)
-                        align = AlignIO.read(StringIO(STDOUT.decode('utf-8')), "fasta")
+                        align = AlignIO.read(StringIO(stdout), "fasta")
                         #print (align)
                         consensus = self._AlignConsensus(align)
                         #print (consensus)
-                        seqrec = SeqRecord(Seq(consensus,generic_dna),id=strain,description=gene)
-                        if(gene not in ConsSeqs):
+                        seqrec = SeqRecord(Seq(consensus, generic_dna), id=strain, description=gene)
+                        if gene not in ConsSeqs:
                             genecons = []
                             genecons.append(seqrec)
                             ConsSeqs[gene] = genecons
@@ -52,14 +56,15 @@ class ConsensusSeqs(object):
                             genecons = ConsSeqs[gene]
                             genecons.append(seqrec)
             self.ConsSeqs = ConsSeqs
-            self.msgHandle.showMsg ('done!')
-            return (True, None)
+            self.msgHandle.showMsg('done!')
+            # print("Consensus Done")
+            return True, None
         except Exception as e:
-            return (False, e)
+            return False, e
     
     def _SortSeqs(self,alnseqs,lenRange,minReadNum,maxReadNum):
     
-        if(len(alnseqs) < minReadNum):return ""
+        if len(alnseqs) < minReadNum : return ""
         
         seqrec = {}
         scorerec = {}
@@ -135,6 +140,6 @@ class ConsensusSeqs(object):
         elif(bases == ['C','G','T']): base = 'B'
         elif(bases == ['A','T','C','G']): base = 'N'
         else:
-            raise ValueError ("%s not defined!" %('/'.join(bases)))
+            raise ValueError("%s not defined!" %('/'.join(bases)))
         
         return base
